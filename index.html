@@ -5380,11 +5380,15 @@ function updateAllBalancesUI() {
 }
 
 function changePlayerBalance(delta) {
+  // локально обновили
   playerBalance += delta;
   if (playerBalance < 0) playerBalance = 0;
-
   updateAllBalancesUI();
+
+  // отправили на сервер (fire-and-forget, ничего не ждём)
+  sendBalanceDelta(delta);
 }
+
 
 // сразу при старте один раз синхронизируем UI
 updateAllBalancesUI();
@@ -6674,6 +6678,40 @@ document.addEventListener("DOMContentLoaded", () => {
   loadBalance();
 });
 
+async function sendBalanceDelta(delta) {
+  const tgId = getTgId();
+  if (!tgId) {
+    console.warn("Нет tgId при отправке delta");
+    return;
+  }
+
+  try {
+    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/change-balance", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        tg_id: Number(tgId),
+        delta: Number(delta)
+      })
+    });
+
+    if (!resp.ok) {
+      console.warn("Ошибка change-balance:", resp.status);
+      return;
+    }
+
+    const data = await resp.json();
+    const balance = Number(data.balance || 0);
+
+    // синхронизируем локальное состояние с БД
+    playerBalance = balance;
+    updateAllBalancesUI();
+  } catch (e) {
+    console.error("Ошибка запроса change-balance:", e);
+  }
+}
 
 
 
@@ -6698,3 +6736,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
