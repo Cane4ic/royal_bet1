@@ -6618,7 +6618,7 @@ if (wheelBackBtn) {
   });
 }
 
-  // Берём объект Telegram WebApp
+   // Берём объект Telegram WebApp
   const tg = window.Telegram && window.Telegram.WebApp;
 
   // ID пользователя из Telegram (очень важно!)
@@ -6626,89 +6626,54 @@ if (wheelBackBtn) {
 
   console.log("Telegram user id:", tgUserId);
 
+  // ОДНА корректная версия loadBalance
   async function loadBalance() {
-  if (!tgUserId) {
-    console.warn("Нет tgUserId – WebApp не внутри Telegram?");
-    return;
-  }
-
-  try {
-    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/balance", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ tg_id: tgUserId })
-    });
-
-    if (!resp.ok) {
-      console.warn("Ошибка ответа API:", resp.status);
+    if (!tgUserId) {
+      console.warn("Нет tgUserId – WebApp не внутри Telegram?");
       return;
     }
 
-    const data = await resp.json();
-    const balance = Number(data.balance || 0);
+    try {
+      const resp = await fetch("https://royal-api-8o0t.onrender.com/api/balance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ tg_id: tgUserId })
+      });
 
-    // тут главное:
-    playerBalance = balance;
-    updateAllBalancesUI();
+      if (!resp.ok) {
+        console.warn("Ошибка ответа API:", resp.status);
+        return;
+      }
 
-  } catch (err) {
-    console.error("Ошибка запроса баланса:", err);
+      const data = await resp.json();
+      const balance = Number(data.balance || 0); // <-- читаем data.balance
+
+      // кладём в глобальную переменную и обновляем весь UI
+      playerBalance = balance;
+      updateAllBalancesUI();
+
+    } catch (err) {
+      console.error("Ошибка запроса баланса:", err);
+    }
   }
-}
 
-
+  // Стартовая инициализация
   document.addEventListener("DOMContentLoaded", () => {
-    // Рекомендуется инициализировать WebApp
     if (tg) {
       tg.ready();
     }
     loadBalance();
   });
 
-const debugEl = document.getElementById("debug");
 
-async function loadBalance() {
-  const tg = window.Telegram?.WebApp;
-  const tgUserId = tg?.initDataUnsafe?.user?.id || null;
 
-  console.log("Telegram user id:", tgUserId);
-  if (debugEl) debugEl.textContent = "tg_id = " + tgUserId;
 
-  if (!tgUserId) {
-    console.warn("Нет tgUserId – WebApp не внутри Telegram?");
-    return;
-  }
 
-  try {
-    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/balance", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tg_id: tgUserId }),
-    });
 
-    if (!resp.ok) {
-      const t = await resp.text();
-      console.error("API error", resp.status, t);
-      if (debugEl) debugEl.textContent = `API error: ${resp.status}`;
-      return;
-    }
 
-    const data = await resp.json();
-    console.log("API response:", data);
 
-    if (debugEl) debugEl.textContent = `OK: ${data.balance_usdt}`;
-
-    const balanceElement = document.querySelector(".wallet-balance");
-    if (balanceElement && typeof data.balance_usdt === "number") {
-      balanceElement.textContent = data.balance_usdt.toFixed(2);
-    }
-  } catch (e) {
-    console.error("fetch error", e);
-    if (debugEl) debugEl.textContent = "fetch error: " + e;
-  }
-}
 
 
 
