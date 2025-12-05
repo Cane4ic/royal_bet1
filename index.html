@@ -6618,54 +6618,58 @@ if (wheelBackBtn) {
   });
 }
 
-   // Берём объект Telegram WebApp
-  const tg = window.Telegram && window.Telegram.WebApp;
+ 
 
-  // ID пользователя из Telegram (очень важно!)
+  console.log("Telegram user id:", tgUserId);
+
+  // ОДНА корректная версия 
+async function loadBalance() {
+  // берём Telegram WebApp прямо здесь
+  const tg = window.Telegram && window.Telegram.WebApp;
   const tgUserId = tg?.initDataUnsafe?.user?.id || null;
 
   console.log("Telegram user id:", tgUserId);
 
-  // ОДНА корректная версия loadBalance
-  async function loadBalance() {
-    if (!tgUserId) {
-      console.warn("Нет tgUserId – WebApp не внутри Telegram?");
+  if (!tgUserId) {
+    console.warn("Нет tgUserId – WebApp не внутри Telegram?");
+    return;
+  }
+
+  try {
+    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/balance", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tg_id: tgUserId })
+    });
+
+    if (!resp.ok) {
+      console.warn("Ошибка ответа API:", resp.status);
       return;
     }
 
-    try {
-      const resp = await fetch("https://royal-api-8o0t.onrender.com/api/balance", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ tg_id: tgUserId })
-      });
+    const data = await resp.json();
+    const balance = Number(data.balance || 0); // <-- читаем data.balance
 
-      if (!resp.ok) {
-        console.warn("Ошибка ответа API:", resp.status);
-        return;
-      }
+    // кладём в глобальную переменную и обновляем весь UI
+    playerBalance = balance;
+    updateAllBalancesUI();
 
-      const data = await resp.json();
-      const balance = Number(data.balance || 0); // <-- читаем data.balance
-
-      // кладём в глобальную переменную и обновляем весь UI
-      playerBalance = balance;
-      updateAllBalancesUI();
-
-    } catch (err) {
-      console.error("Ошибка запроса баланса:", err);
-    }
+  } catch (err) {
+    console.error("Ошибка запроса баланса:", err);
   }
+}
+
 
   // Стартовая инициализация
-  document.addEventListener("DOMContentLoaded", () => {
-    if (tg) {
-      tg.ready();
-    }
-    loadBalance();
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (tg) {
+    tg.ready();
+  }
+  loadBalance();
+});
 
 
 
@@ -6689,7 +6693,6 @@ if (wheelBackBtn) {
   <div class="game-loader-text">Загрузка…</div>
 </div>
 
-<div id="debug" style="position:fixed;bottom:8px;left:8px;
-     font-size:12px;color:#888;z-index:9999;"></div>
+
 </body>
 </html>
