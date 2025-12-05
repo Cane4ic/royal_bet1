@@ -6625,15 +6625,16 @@ if (wheelBackBtn) {
 
  
 
-  console.log("Telegram user id:", tgUserId);
+  
 
-  // ОДНА корректная версия 
+  // ===== TELEGRAM WEB APP: ЗАГРУЗКА БАЛАНСА =====
+
+// одна функция, которая всё делает
 async function loadBalance() {
-  // берём Telegram WebApp прямо здесь
   const tg = window.Telegram && window.Telegram.WebApp;
   const tgUserId = tg?.initDataUnsafe?.user?.id || null;
 
-  console.log("Telegram user id:", tgUserId);
+  console.log("Telegram user id in loadBalance:", tgUserId);
 
   if (!tgUserId) {
     console.warn("Нет tgUserId – WebApp не внутри Telegram?");
@@ -6655,19 +6656,16 @@ async function loadBalance() {
     }
 
     const data = await resp.json();
-    const balance = Number(data.balance || 0); // <-- читаем data.balance
+    const balance = Number(data.balance || 0);
 
-    // кладём в глобальную переменную и обновляем весь UI
     playerBalance = balance;
     updateAllBalancesUI();
-
   } catch (err) {
     console.error("Ошибка запроса баланса:", err);
   }
 }
 
-
-  // Стартовая инициализация
+// Стартовая инициализация
 document.addEventListener("DOMContentLoaded", () => {
   const tg = window.Telegram && window.Telegram.WebApp;
   if (tg) {
@@ -6675,7 +6673,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   loadBalance();
 });
-
 
 
 
