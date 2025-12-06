@@ -5357,7 +5357,7 @@
      // ===== ГЛОБАЛЬНЫЙ БАЛАНС ИГРОКА =====
 // ===== ГЛОБАЛЬНЫЙ БАЛАНС ИГРОКА =====
 let playerBalance = 0; // стартовый, реальный баланс подтянем из API
-
+let userDepositAddress = null;
 // элементы, где этот баланс показываем
 const headerBalanceEl = document.querySelector('.wallet-balance'); // в шапке
 const slotBalanceEl   = document.getElementById('slotBalance');
@@ -5503,20 +5503,32 @@ updateAllBalancesUI();
     }
 
     function openDepositPaymentStep(data) {
-      depositSelectStep.style.display = 'none';
-      depositPaymentStep.classList.add('active');
-      walletBackBtn.classList.remove('hidden');
-      walletModalTitle.textContent = 'Криптовалютный платеж';
+  depositSelectStep.style.display = 'none';
+  depositPaymentStep.classList.add('active');
+  walletBackBtn.classList.remove('hidden');
+  walletModalTitle.textContent = 'Криптовалютный платеж';
 
-      const { network, min, symbol, coinImg, networkImg } = data;
-      if (coinImg) payCoinImg.src = coinImg;
-      if (networkImg) payNetworkImg.src = networkImg;
+  const { network, min, symbol, coinImg, networkImg } = data;
+  if (coinImg) payCoinImg.src = coinImg;
+  if (networkImg) payNetworkImg.src = networkImg;
 
-      payMinAmount.textContent = `${min} ${symbol}`;
-      payNetwork.textContent = network;
-      payWarningCurrency.textContent = symbol;
-      payWarningNetwork.textContent = network;
+  payMinAmount.textContent = `${min} ${symbol}`;
+  payNetwork.textContent = network;
+  payWarningCurrency.textContent = symbol;
+  payWarningNetwork.textContent = network;
+
+  // ← НОВОЕ
+  loadDepositAddress().then(addr => {
+    if (payAddress) {
+      if (addr) {
+        payAddress.textContent = addr;
+      } else {
+        payAddress.textContent = "Адрес не найден. Напишите в поддержку.";
+      }
     }
+  });
+}
+
 
     walletBackBtn.addEventListener('click', openDepositSelectStep);
 
@@ -6639,6 +6651,41 @@ function getTgId() {
   return fromTelegram || fromUrl || null;
 }
 
+    async function loadDepositAddress() {
+  if (userDepositAddress !== null) {
+    // Уже загружали раньше
+    return userDepositAddress;
+  }
+
+  const tgId = getTgId();
+  if (!tgId) {
+    console.warn("Нет tgId для загрузки депозит-адреса");
+    return null;
+  }
+
+  try {
+    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/deposit-address", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tg_id: Number(tgId) })
+    });
+
+    if (!resp.ok) {
+      console.warn("Ошибка ответа API /api/deposit-address:", resp.status);
+      return null;
+    }
+
+    const data = await resp.json();
+    userDepositAddress = data.address || null;
+    return userDepositAddress;
+  } catch (e) {
+    console.error("Ошибка запроса депозит-адреса:", e);
+    return null;
+  }
+}
+
 // 2. загрузка баланса при входе в WebApp
 async function loadBalance() {
   const tgId = getTgId();
@@ -6754,5 +6801,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
