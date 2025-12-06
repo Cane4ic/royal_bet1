@@ -196,16 +196,18 @@
 
     /* ---------- TOP BAR ---------- */
     .top-bar {
-      position: fixed;
-      left: 260px;
-      right: 0;
-      top: 18px;
-      padding: 0 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 25;
-    }
+  position: fixed;
+  left: 260px;
+  right: 0;
+  top: 0;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 25;
+  background: #000;              /* чёрная полоса */
+  border-bottom: 1px solid #20232a;
+}
 
     .logo-wrapper {
       display: flex;
@@ -1272,97 +1274,120 @@
     }
 
     @media (max-width: 768px) {
-      .sidebar {
-        left: -260px;
-        top: 100;
-        bottom: 0;
-        height: auto;
-      }
-      .sidebar.open {
-        left: 0;
-      }
+  .sidebar {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 75vh;
+    max-height: 520px;
+    border-right: none;
+    border-top: 1px solid #20232a;
+    border-radius: 18px 18px 0 0;
+    padding: 14px 14px 16px;
+    transform: translateY(100%);
+    transition: transform .2s ease-out;
+  }
 
-      .top-bar {
-        left: 0;
-        top: 10px;
-        padding: 0 10px;
-      }
+  .sidebar.open {
+    transform: translateY(0);
+  }
 
-      .logo-wrapper img { height: 48px; }
+  .sidebar-top .burger-btn {
+    display: inline-flex;
+  }
 
-      .top-bar-right { gap: 8px; }
+  .sidebar-backdrop {
+    display: none;
+  }
 
-      .wallet {
-        padding: 7px 10px;
-        font-size: 14px;
-        min-width: 110px;
-      }
+  .sidebar-backdrop.open {
+    display: block;
+    background: rgba(0,0,0,0.6);
+  }
 
-      .wallet-symbol { font-size: 18px; }
+  .top-bar {
+    left: 0;
+    top: 0;
+    padding: 8px 10px;
+  }
 
-      .btn-deposit {
-        padding: 8px 14px;
-        font-size: 14px;
-      }
+  .logo-wrapper img { height: 48px; }
+  .top-bar-right { gap: 8px; }
 
-      .profile-avatar {
-        width: 36px;
-        height: 36px;
-      }
+  .wallet {
+    padding: 7px 10px;
+    font-size: 14px;
+    min-width: 110px;
+  }
 
-      .mobile-burger { display: inline-flex; }
+  .wallet-symbol { font-size: 18px; }
 
-      .sidebar-top .burger-btn {
-        display: none;
-      }
+  .btn-deposit {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
 
-      .balance-panel {
-        width: calc(100vw - 24px);
-        max-width: 320px;
-      }
+  .profile-avatar {
+    width: 36px;
+    height: 36px;
+  }
 
-      .wallet-modal {
-        width: calc(100vw - 24px);
-        max-height: calc(100vh - 80px);
-      }
+  .mobile-burger { display: inline-flex; }
 
-      .crypto-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
+  .balance-panel {
+    width: calc(100vw - 24px);
+    max-width: 320px;
+  }
 
-      .pay-warnings {
-        grid-template-columns: 1fr;
-      }
+  .wallet-modal {
+    width: calc(100vw - 24px);
+    max-height: calc(100vh - 80px);
+  }
 
-      .page-content {
-        margin-left: 0;
-        padding: 90px 16px 24px;
-      }
+  .crypto-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 
-      .promo-layout {
-        flex-direction: column;
-      }
+  .pay-warnings {
+    grid-template-columns: 1fr;
+  }
 
-      .promo-side {
-        display: none;
-      }
+  .page-content {
+    margin-left: 0;
+    padding: 90px 16px 90px; /* снизу добавили под отступ под нижнее меню */
+  }
 
-      .games-section {
-        margin-top: 24px;
-      }
+  .promo-layout {
+    flex-direction: column;
+  }
 
-      .game-card {
-  width: 100%;
-  max-width: 160px;      /* раньше 210px */
-  border-radius: 14px;   /* чуть меньше */
-  background: #101117;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-  transition: transform .15s ease-out, box-shadow .15s ease-out, filter .15s;
+  .promo-side {
+    display: none;
+  }
+
+  .games-section {
+    margin-top: 24px;
+  }
+
+  .game-card {
+    width: 100%;
+    max-width: 160px;
+    border-radius: 14px;
+    background: #101117;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    transition: transform .15s ease-out, box-shadow .15s ease-out, filter .15s;
+  }
 }
 
-    }
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 72px;
+  }
+}
 
     /* бургер внутри sidebar — виден на мобилке */
     .sidebar-top .burger-btn {
@@ -3931,114 +3956,189 @@
   cursor: pointer;
 }
 
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sidebar-socials {
+  display: flex;
+  gap: 8px;
+  margin: 8px 8px 0;
+}
+
+.social-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #191b23;
+  border: 1px solid #262932;
+  font-size: 12px;
+  text-decoration: none;
+  color: var(--text-main);
+}
+
+.social-btn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.mobile-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  background: #111318;
+  border-top: 1px solid #20232a;
+  padding: 6px 12px 10px;
+  display: none;                  /* будет только на мобилке */
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.bottom-nav-btn {
+  flex: 1;
+  border: none;
+  background: #191b23;
+  border-radius: 999px;
+  padding: 6px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #e7e9ef;
+  cursor: pointer;
+}
+
+.bottom-nav-icon img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.bottom-nav-label {
+  font-size: 11px;
+}
+
+/* включаем только на мобилке */
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex;
+  }
+}
+
   </style>
 </head>
 <body>
   <!-- САЙДБАР -->
   <aside class="sidebar">
-    <div class="sidebar-top">
-      <button class="burger-btn">☰</button>
-      <div class="mode-switch">
-        <button>Казино</button>
-      </div>
+  <div class="sidebar-top">
+    <button class="burger-btn" id="sidebarCloseBtn">✕</button>
+    <div class="mode-switch">
+      <button>Меню Royal Bet</button>
+    </div>
+  </div>
+
+  <div class="sidebar-scroll">
+    <!-- Меню -->
+    <div class="menu-section">
+      <div class="menu-section-title">Меню</div>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <button class="menu-link" data-nav="main">
+            <span class="menu-icon">
+              <img src="icons/home.png" alt="">
+            </span>
+            Главная
+          </button>
+        </li>
+        <li class="menu-item">
+          <button class="menu-link" data-nav="favorites">
+            <span class="menu-icon">
+              <img src="icons/fav.png" alt="">
+            </span>
+            Избраное
+          </button>
+        </li>
+        <li class="menu-item">
+          <button class="menu-link" data-nav="bonuses">
+            <span class="menu-icon">
+              <img src="icons/bonus.png" alt="">
+            </span>
+            Бонусы
+          </button>
+        </li>
+      </ul>
     </div>
 
-    <input class="search-input" type="text" placeholder="Поиск" />
+    <!-- Игры -->
+    <div class="menu-section">
+      <div class="menu-section-title">Игры</div>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <button class="menu-link" data-game="dice">Dice</button>
+        </li>
+        <li class="menu-item">
+          <button class="menu-link" data-game="roulettex100">Roulette X100</button>
+        </li>
+        <li class="menu-item">
+          <button class="menu-link" data-game="royalmines">Royal Mines</button>
+        </li>
+        <li class="menu-item">
+          <button class="menu-link" data-game="crashroyal">Crash Royal</button>
+        </li>
+        <li class="menu-item">
+          <button class="menu-link" data-game="coinflip">Coin Flip</button>
+        </li>
+        <li class="menu-item">
+          <button class="menu-link" data-game="slotsroyal">Slots Royal</button>
+        </li>
+      </ul>
+    </div>
 
-    <ul class="menu-list">
-      <li class="menu-item">
-        <a class="menu-link active" href="#">
-          <span class="menu-icon"><img src="icons/home.png"></span>
-          Главная
+    <!-- Соцсети -->
+    <div class="menu-section">
+      <div class="menu-section-title">Соцсети</div>
+      <div class="sidebar-socials">
+        <a href="#" class="social-btn" target="_blank" rel="noopener">
+          <img src="icons/telegram.png" alt="">
+          <span>Telegram</span>
         </a>
-      </li>
-      <li class="menu-item">
-        <a class="menu-link" href="#">
-          <span class="menu-icon"><img src="icons/favorite.png"></span>
-          Избранное
+        <a href="#" class="social-btn" target="_blank" rel="noopener">
+          <img src="icons/x.png" alt="">
+          <span>X</span>
         </a>
-      </li>
-      <li class="menu-item">
-        <a class="menu-link" href="#">
-          <span class="menu-icon"><img src="icons/bonus.png"></span>
-          Бонусы
+        <a href="#" class="social-btn" target="_blank" rel="noopener">
+          <img src="icons/instagram.png" alt="">
+          <span>Instagram</span>
         </a>
-      </li>
-    </ul>
-
-    <div class="divider"></div>
-
-    <div class="menu-section-title">Игры</div>
-    <ul class="menu-list">
-      <li class="menu-item">
-        <a class="menu-link" href="#">
-          <span class="menu-icon"><img src="icons/slots.png"></span>
-          Слоты
-        </a>
-      </li>
-      <li class="menu-item">
-        <a class="menu-link" href="#">
-          <span class="menu-icon"><img src="icons/popular.png"></span>
-          Популярные
-        </a>
-      </li>
-      <li class="menu-item">
-        <a class="menu-link" href="#">
-          <span class="menu-icon"><img src="icons/fast.png"></span>
-          Быстрые игры
-        </a>
-      </li>
-      <li class="menu-item">
-        <a class="menu-link" href="#">
-          <span class="menu-icon"><img src="icons/new.png"></span>
-          Новинки
-        </a>
-      </li>
-      <li class="menu-item">
-        <a class="menu-link" href="#">
-          <span class="menu-icon"><img src="icons/recommended.png"></span>
-          Рекомендуемые
-        </a>
-      </li>
-    </ul>
-
-    <div class="divider"></div>
-
-    <div class="menu-section-title">Live Казино</div>
-    <ul class="menu-list">
-      <li class="menu-item">
-        <a class="menu-link" href="#">
-          <span class="menu-icon"><img src="icons/blackjack.png"></span>
-          Блэкджек
-        </a>
-      </li>
-      <li class="menu-item">
-        <a class="menu-link" href="#">
-          <span class="menu-icon"><img src="icons/roulette.png"></span>
-          Рулетка
-        </a>
-      </li>
-      <li class="menu-item">
-        <a class="menu-link" href="#">
-          <span class="menu-icon"><img src="icons/baccarat.png"></span>
-          Баккара
-        </a>
-      </li>
-    </ul>
-
-    <div class="sidebar-bottom">
-      <div class="divider"></div>
-      <div class="bottom-row">
-        <div class="lang-btn"></div>
-        <div class="support-btn">
-          <span class="support-icon"><img src="icons/support.png"></span>
-          Поддержка
-        </div>
       </div>
     </div>
-  </aside>
+  </div>
 
-  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <div class="sidebar-bottom">
+    <div class="divider"></div>
+    <div class="bottom-row">
+      <button class="lang-btn" id="langToggle">RU</button>
+      <button class="support-btn" id="supportBtn">
+        <span class="support-icon">
+          <img src="icons/support.png" alt="">
+        </span>
+        <span>Поддержка</span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
 
   <!-- TOP BAR -->
   <header class="top-bar">
@@ -5237,6 +5337,30 @@
   </div>
 </div>
 
+<nav class="mobile-bottom-nav">
+  <button class="bottom-nav-btn" id="bottomProfileBtn">
+    <span class="bottom-nav-icon">
+      <img src="icons/profile.png" alt="">
+    </span>
+    <span class="bottom-nav-label">Профиль</span>
+  </button>
+
+  <button class="bottom-nav-btn" id="bottomWalletBtn">
+    <span class="bottom-nav-icon">
+      <img src="icons/wallet.png" alt="">
+    </span>
+    <span class="bottom-nav-label">Кошелёк</span>
+  </button>
+
+  <button class="bottom-nav-btn" id="bottomMenuBtn">
+    <span class="bottom-nav-icon">
+      <img src="icons/burger.png" alt="">
+    </span>
+    <span class="bottom-nav-label">Меню</span>
+  </button>
+</nav>
+
+
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 
@@ -5272,6 +5396,11 @@
     const sidebarBackdrop = document.getElementById('sidebarBackdrop');
     const burgerToggle = document.getElementById('burgerToggle');
     const sidebarBurgerBtn = document.querySelector('.sidebar .burger-btn');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+    // нижнее меню
+const bottomProfileBtn = document.getElementById('bottomProfileBtn');
+const bottomWalletBtn  = document.getElementById('bottomWalletBtn');
+const bottomMenuBtn    = document.getElementById('bottomMenuBtn');
 
     const walletBtn = document.getElementById('walletBtn');
     const balanceOverlay = document.getElementById('balanceOverlay');
@@ -5415,6 +5544,17 @@ updateAllBalancesUI();
     if (sidebarBurgerBtn) {
       sidebarBurgerBtn.addEventListener('click', toggleSidebar);
     }
+
+    if (sidebarCloseBtn) {
+  sidebarCloseBtn.addEventListener('click', toggleSidebar);
+}
+
+// нижнее меню
+if (bottomMenuBtn) {
+  bottomMenuBtn.addEventListener('click', () => {
+    toggleSidebar();
+  });
+}
 
     // BALANCE PANEL
     walletBtn.addEventListener('click', (e) => {
@@ -5777,6 +5917,23 @@ function showOnlyPage(pageEl) {
   // Назад на главную
   profileBackBtn.addEventListener('click', () => {
     showOnlyPage(mainPage);
+  });
+}
+
+// нижнее меню: профиль
+if (bottomProfileBtn && profilePage && mainPage) {
+  bottomProfileBtn.addEventListener('click', () => {
+    showOnlyPage(profilePage);
+    // на всякий случай закрываем сайдбар, если открыт
+    sidebar.classList.remove('open');
+    sidebarBackdrop.classList.remove('open');
+  });
+}
+
+// нижнее меню: кошелёк (депозит)
+if (bottomWalletBtn && typeof openWalletModal === 'function') {
+  bottomWalletBtn.addEventListener('click', () => {
+    openWalletModal();
   });
 }
 
