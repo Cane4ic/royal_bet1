@@ -5573,7 +5573,10 @@ const profileGender    = document.getElementById('profileGender');
 const profileSaveBtn   = document.getElementById('profileSaveBtn');
 
 if (profileSaveBtn) {
-  profileSaveBtn.addEventListener('click', async () => {
+  profileSaveBtn.addEventListener('click', async (e) => {
+    // если кнопка внутри form — это на всякий случай
+    e.preventDefault?.();
+
     const tgId = getTgId();
     if (!tgId) {
       console.warn("Нет tg_id, не можем сохранить профиль");
@@ -5584,12 +5587,12 @@ if (profileSaveBtn) {
       tg_id: Number(tgId),
       first_name: profileFirstName.value.trim(),
       last_name: profileLastName.value.trim(),
-      birth_date: profileBirthDate.value,  // формат YYYY-MM-DD
+      birth_date: profileBirthDate.value || null,  // "YYYY-MM-DD"
       gender: profileGender.value || null
     };
 
     try {
-      const resp = await fetch("https://royal-api-8o0t.onrender.com/api/profile", {
+      const resp = await fetch("https://royal-api-8o0t.onrender.com/api/personal-data/save", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -5598,18 +5601,18 @@ if (profileSaveBtn) {
       });
 
       if (!resp.ok) {
-        console.warn("Ошибка ответа API /api/profile:", resp.status);
+        const err = await resp.json().catch(() => ({}));
+        console.warn("Ошибка ответа API /api/personal-data/save:", resp.status, err);
+        alert("Ошибка сохранения: " + (err.detail || resp.status));
         return;
       }
 
       const data = await resp.json();
       console.log("Профиль сохранён:", data);
-
-      // здесь можно показать уведомление пользователю
-      // например:
-      // alert("Данные успешно сохранены");
+      alert("Данные успешно сохранены");
     } catch (err) {
       console.error("Ошибка при сохранении профиля:", err);
+      alert("Ошибка сети при сохранении профиля");
     }
   });
 }
