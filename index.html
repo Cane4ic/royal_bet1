@@ -275,15 +275,44 @@
 }
 
     .logo-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;                /* логотип тянется до кошелька */
+  min-width: 0;
+}
 
-    .logo-wrapper img {
-      height: 80px;
-      display: block;
-    }
+.logo-mark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo-text {
+  font-family: "Times New Roman", serif;  /* можно подобрать другой шрифт */
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  background: linear-gradient(180deg, #ffd84a, #ff9a2b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  text-shadow:
+    0 0 6px rgba(0, 0, 0, 0.8),
+    0 4px 8px rgba(0, 0, 0, 0.9);
+}
+
+.logo-underline {
+  margin-top: 4px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffd84a, #ff9a2b);
+  width: 100%;
+  max-width: 260px;   /* длина полоски, можно менять */
+}
 
     .top-bar-right {
       display: flex;
@@ -517,6 +546,8 @@
       background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
       color: #111;
     }
+
+    
 
     /* ===== МОДАЛКА КОШЕЛЬКА / ВАЛЮТЫ ===== */
 
@@ -1386,6 +1417,21 @@
 
   .logo-wrapper img { height: 48px; }
   .top-bar-right { gap: 8px; }
+
+  @media (max-width: 768px) {
+  /* ... твои существующие правила ... */
+
+  .logo-text span {
+    font-size: 20px;
+    letter-spacing: 0.10em;
+  }
+
+  .logo-text::after {
+    bottom: -4px;
+    max-width: 180px;
+    height: 2px;
+  }
+}
 
   .wallet {
     padding: 7px 10px;
@@ -4255,26 +4301,30 @@
 
   <!-- TOP BAR -->
   <header class="top-bar">
-    <div class="logo-wrapper">
-      <button class="mobile-burger" id="burgerToggle">☰</button>
-      <img src="logo.png" alt="Royal Bet">
+  <div class="logo-wrapper">
+    <button class="mobile-burger" id="burgerToggle">☰</button>
+
+    <div class="logo-mark">
+      <div class="logo-text">ROYAL BET</div>
+      <div class="logo-underline"></div>
+    </div>
+  </div>
+
+  <div class="top-bar-right">
+    <div class="wallet" id="walletBtn">
+      <span class="wallet-symbol" id="walletCurrencySymbol">₴</span>
+      <span class="wallet-balance">0.00</span>
+      <span class="wallet-arrow">▾</span>
     </div>
 
-    <div class="top-bar-right">
-      <div class="wallet" id="walletBtn">
-        <span class="wallet-symbol" id="walletCurrencySymbol">₴</span>
-        <span class="wallet-balance">0.00</span>
-        <span class="wallet-arrow">▾</span>
-      </div>
+    <button class="btn-deposit" id="depositBtn">Пополнить</button>
 
-      <button class="btn-deposit" id="depositBtn">Пополнить</button>
-
-      <div class="profile-avatar">
-        <img src="icons/avatar.png" alt="">
-        <span class="profile-status"></span>
-      </div>
+    <div class="profile-avatar">
+      <img src="icons/avatar.png" alt="">
+      <span class="profile-status"></span>
     </div>
-  </header>
+  </div>
+</header>
 
   <!-- ПРОМО-БЛОК -->
   <main class="page-content" id="mainPage">
