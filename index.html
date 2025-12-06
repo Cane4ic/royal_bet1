@@ -4535,9 +4535,34 @@ html, body {
     <!-- ТАБ "БЕЗОПАСНОСТЬ" -->
     <section class="profile-form-card" id="securityTab" style="display:none;">
       <div class="profile-form-title">Безопасность</div>
-      <p style="color: var(--text-soft); font-size:14px;">
-        Здесь могут быть настройки пароля, двухфакторной аутентификации и т.п.
-      </p>
+      <div class="security-block">
+  <h3>Google Authenticator (2FA)</h3>
+
+  <p>Статус: <span id="twofaStatusText">Загрузка...</span></p>
+
+  <button class="security-btn" id="twofaStartBtn">
+    Подключить Google Authenticator
+  </button>
+
+  <div id="twofaSetupBlock" style="display:none; margin-top: 10px;">
+    <p><b>Шаг 1.</b> Добавь новый аккаунт в приложении Google Authenticator по этому ключу:</p>
+    <div id="twofaSecretBox"
+         style="padding: 8px; border-radius: 6px; background:#1c1c1c; font-family: monospace; word-break: break-all;"></div>
+
+    <p style="margin-top:8px;"><b>Шаг 2.</b> Введи 6-значный код из приложения:</p>
+    <input id="twofaCodeInput"
+           type="text"
+           maxlength="6"
+           inputmode="numeric"
+           style="padding:6px 8px; border-radius:4px; width:120px; text-align:center;" />
+
+    <button id="twofaConfirmBtn" class="security-btn" style="margin-left:8px;">
+      Подтвердить
+    </button>
+
+    <p id="twofaMessage" style="margin-top:8px; font-size: 14px;"></p>
+  </div>
+</div>
     </section>
   </main>
 
@@ -5576,6 +5601,142 @@ html, body {
     return fromTelegram || fromUrl || null;
   }
 
+  const twofaStatusText = document.getElementById('twofaStatusText');
+const twofaStartBtn   = document.getElementById('twofaStartBtn');
+const twofaSetupBlock = document.getElementById('twofaSetupBlock');
+const twofaSecretBox  = document.getElementById('twofaSecretBox');
+const twofaCodeInput  = document.getElementById('twofaCodeInput');
+const twofaConfirmBtn = document.getElementById('twofaConfirmBtn');
+const twofaMessage    = document.getElementById('twofaMessage');
+
+async function loadTwofaStatus() {
+  const tgId = getTgId();
+  if (!tgId || !twofaStatusText) return;
+
+  try {
+    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/2fa/status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tg_id: Number(tgId) })
+    });
+
+    if (!resp.ok) {
+      twofaStatusText.textContent = "выключена";
+      return;
+    }
+
+    const data = await resp.json();
+    twofaStatusText.textContent = data.enabled ? "включена" : "выключена";
+  } catch (e) {
+    console.error("Ошибка загрузки статуса 2FA:", e);
+    twofaStatusText.textContent = "ошибка";
+  }
+}
+
+if (twofaStartBtn) {
+  twofaStartBtn.addEventListener('click', async () => {
+    const tgId = getTgId();
+    if (!tgId) {
+      alert("Не найден tg_id");
+      return;
+    }
+
+    try {
+      const resp = await fetch("https://royal-api-8o0t.onrender.com/api/2fa/init", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tg_id: Number(tgId) })
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        console.warn("Ошибка /api/2fa/init:", resp.status, err);
+        alert("Ошибка инициализации 2FA");
+        return;
+      }
+
+      const data = await resp.json();
+      // показываем секрет
+      if (twofaSecretBox) {
+        twofaSecretBox.textContent = data.secret || "";
+      }
+
+      if (twofaMessage) {
+        twofaMessage.textContent = "Добавь ключ в Google Authenticator и введи код ниже.";
+        twofaMessage.style.color = "#ccc";
+      }
+
+      if (twofaSetupBlock) {
+        twofaSetupBlock.style.display = 'block';
+      }
+    } catch (e) {
+      console.error("Ошибка при инициализации 2FA:", e);
+      alert("Ошибка сети при инициализации 2FA");
+    }
+  });
+}
+
+if (twofaConfirmBtn) {
+  twofaConfirmBtn.addEventListener('click', async () => {
+    const tgId = getTgId();
+    if (!tgId) {
+      alert("Не найден tg_id");
+      return;
+    }
+
+    const code = (twofaCodeInput?.value || "").trim();
+    if (!code) {
+      if (twofaMessage) {
+        twofaMessage.textContent = "Введите код из приложения";
+        twofaMessage.style.color = "#ff6b6b";
+      }
+      return;
+    }
+
+    try {
+      const resp = await fetch("https://royal-api-8o0t.onrender.com/api/2fa/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tg_id: Number(tgId),
+          code: code
+        })
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        console.warn("Ошибка /api/2fa/verify:", resp.status, err);
+
+        if (twofaMessage) {
+          twofaMessage.textContent = err.detail || "Неверный код";
+          twofaMessage.style.color = "#ff6b6b";
+        }
+        return;
+      }
+
+      // всё ок
+      if (twofaMessage) {
+        twofaMessage.textContent = "2FA успешно подключена!";
+        twofaMessage.style.color = "#35d659";
+      }
+
+      if (twofaStatusText) {
+        twofaStatusText.textContent = "включена";
+      }
+
+      // можно спрятать блок ввода кода
+      // twofaSetupBlock.style.display = 'none';
+    } catch (e) {
+      console.error("Ошибка при проверке 2FA:", e);
+      if (twofaMessage) {
+        twofaMessage.textContent = "Ошибка сети при проверке кода";
+        twofaMessage.style.color = "#ff6b6b";
+      }
+    }
+  });
+}
+
+
   document.addEventListener("DOMContentLoaded", () => {
     // 2. Берём элементы ТОЛЬКО после того, как DOM построен
     const profileFirstName = document.getElementById('profileFirstName');
@@ -6357,6 +6518,8 @@ if (bottomWalletBtn && typeof openWalletModal === 'function') {
         }
       });
     });
+
+    
 
     // ===== КОПИРОВАНИЕ ID В ПРОФИЛЕ =====
     const copyIdBtn = document.getElementById('copyIdBtn');
@@ -7483,6 +7646,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   loadBalance();
   loadProfileData();
+  loadTwofaStatus();
 
   // ==== Telegram ID / имя ====
   const tgId   = getTgId();
