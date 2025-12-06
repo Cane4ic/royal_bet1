@@ -148,36 +148,81 @@
     .sidebar-bottom { margin-top: auto; }
 
     .bottom-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
+  display: flex;
+  gap: 8px;
+  margin: 8px 8px 0;
+}
 
-    .lang-btn {
-      width: 46px;
-      height: 38px;
-      background: #191b23;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 20px;
-    }
+.lang-dropdown-wrapper {
+  position: relative;
+}
 
-    .support-btn {
-      flex: 1;
-      height: 38px;
-      background: #191b23;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      font-size: 15px;
-      transition: background .16s, color .16s;
-    }
+/* дропдаун выбора языка */
+.lang-dropdown {
+  position: absolute;
+  bottom: 120%;
+  left: 0;
+  display: none;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #111318;
+  border: 1px solid #262932;
+  z-index: 80;
+}
+
+.lang-dropdown.open {
+  display: flex;
+}
+
+.lang-option {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 4px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.lang-option img {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.lang-option:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+    /* общие стили кнопок языка и поддержки */
+.lang-btn,
+.support-btn {
+  border: none;
+  outline: none;
+  background: #191b23;
+  color: var(--text-main);
+  border-radius: 999px;
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.lang-btn img,
+.support-btn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.lang-btn:focus,
+.support-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
 
     .support-btn:hover {
       background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
@@ -4092,22 +4137,37 @@
       <div class="menu-section-title">Игры</div>
       <ul class="menu-list">
         <li class="menu-item">
-          <button class="menu-link" data-game="dice">Dice</button>
-        </li>
-        <li class="menu-item">
-          <button class="menu-link" data-game="roulettex100">Roulette X100</button>
-        </li>
-        <li class="menu-item">
-          <button class="menu-link" data-game="royalmines">Royal Mines</button>
-        </li>
-        <li class="menu-item">
-          <button class="menu-link" data-game="crashroyal">Crash Royal</button>
-        </li>
-        <li class="menu-item">
-          <button class="menu-link" data-game="coinflip">Coin Flip</button>
-        </li>
-        <li class="menu-item">
-          <button class="menu-link" data-game="slotsroyal">Slots Royal</button>
+          </button>
+    </li>
+    <li class="menu-item">
+      <button class="menu-link" data-game="roulettex100">
+        <span class="menu-icon"></span>
+        <span>Roulette X100</span>
+      </button>
+    </li>
+    <li class="menu-item">
+      <button class="menu-link" data-game="royalmines">
+        <span class="menu-icon"></span>
+        <span>Royal Mines</span>
+      </button>
+    </li>
+    <li class="menu-item">
+      <button class="menu-link" data-game="crashroyal">
+        <span class="menu-icon"></span>
+        <span>Crash Royal</span>
+      </button>
+    </li>
+    <li class="menu-item">
+      <button class="menu-link" data-game="coinflip">
+        <span class="menu-icon"></span>
+        <span>Coin Flip</span>
+      </button>
+    </li>
+    <li class="menu-item">
+      <button class="menu-link" data-game="slotsroyal">
+        <span class="menu-icon"></span>
+        <span>Slots Royal</span>
+      </button>
         </li>
       </ul>
     </div>
@@ -4135,17 +4195,38 @@
   </div>
 
   <div class="sidebar-bottom">
-    <div class="divider"></div>
-    <div class="bottom-row">
-      <button class="lang-btn" id="langToggle">RU</button>
-      <button class="support-btn" id="supportBtn">
-        <span class="support-icon">
-          <img src="icons/support.png" alt="">
-        </span>
-        <span>Поддержка</span>
+  <div class="divider"></div>
+  <div class="bottom-row">
+
+    <!-- выбор языка -->
+    <div class="lang-dropdown-wrapper">
+      <button class="lang-btn" id="langToggle">
+        <img id="currentLangIcon" src="icons/flag-ru.png" alt="RU">
       </button>
+
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="lang-option" data-lang="ru">
+          <img src="icons/flag-ru.png" alt="RU">
+        </button>
+        <button class="lang-option" data-lang="ua">
+          <img src="icons/flag-ua.png" alt="UA">
+        </button>
+        <button class="lang-option" data-lang="en">
+          <img src="icons/flag-en.png" alt="EN">
+        </button>
+      </div>
     </div>
+
+    <!-- поддержка -->
+    <button class="support-btn" id="supportBtn">
+      <span class="support-icon">
+        <img src="icons/support.png" alt="">
+      </span>
+      <span data-i18n="support.title">Поддержка</span>
+    </button>
   </div>
+</div>
+
 </aside>
 
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
@@ -6585,28 +6666,10 @@ function showTopToast(text) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  const bgAudio = document.getElementById("minesMusic");
-  if (bgAudio) {
-    bgAudio.volume = 1.0;
-    bgAudio.play().catch(() => {
-      // браузер мог запретить автоплей, ждём первого клика
-      document.addEventListener("click", () => {
-        bgAudio.play().catch(() => {});
-      }, { once: true });
-    });
-  }
-
-  // обновляем иконку и текст в меню
-  const musicBtn  = document.querySelector('.mines-menu-item[data-action="music"]');
-  if (musicBtn) {
-    const labelEl = musicBtn.querySelector('.mines-menu-label');
-    const iconImg = musicBtn.querySelector('.mines-menu-icon img');
-    musicBtn.classList.add("active");
-
-    if (labelEl) labelEl.textContent = "Музыка: вкл";
-    if (iconImg) iconImg.src = "icons/music-on.svg";
-  }
+  // стартовая инициализация языка
+  initLanguageFromStorage();
 });
+
 
 
 // WHEEL GAME
@@ -6965,7 +7028,137 @@ document.addEventListener("DOMContentLoaded", () => {
   loadBalance();
 });
 
+// ==== i18n ====
 
+const translations = {
+  ru: {
+    "menu.mainTitle": "Меню",
+    "menu.home": "Главная",
+    "menu.favorites": "Избраное",
+    "menu.bonuses": "Бонусы",
+
+    "section.games": "Игры",
+    "section.socials": "Соцсети",
+
+    "bottom.profile": "Профиль",
+    "bottom.wallet": "Кошелёк",
+    "bottom.menu": "Меню",
+
+    "support.title": "Поддержка",
+
+    "search.games": "Поиск от 3 символов",
+
+    "actions.deposit": "Пополнить"
+  },
+
+  ua: {
+    "menu.mainTitle": "Меню",
+    "menu.home": "Головна",
+    "menu.favorites": "Обране",
+    "menu.bonuses": "Бонуси",
+
+    "section.games": "Ігри",
+    "section.socials": "Соцмережі",
+
+    "bottom.profile": "Профіль",
+    "bottom.wallet": "Гаманець",
+    "bottom.menu": "Меню",
+
+    "support.title": "Підтримка",
+
+    "search.games": "Пошук від 3 символів",
+
+    "actions.deposit": "Поповнити"
+  },
+
+  en: {
+    "menu.mainTitle": "Menu",
+    "menu.home": "Home",
+    "menu.favorites": "Favorites",
+    "menu.bonuses": "Bonuses",
+
+    "section.games": "Games",
+    "section.socials": "Socials",
+
+    "bottom.profile": "Profile",
+    "bottom.wallet": "Wallet",
+    "bottom.menu": "Menu",
+
+    "support.title": "Support",
+
+    "search.games": "Search from 3 characters",
+
+    "actions.deposit": "Deposit"
+  }
+};
+
+let currentLang = "ru";
+
+function applyTranslations() {
+  // обычный текст
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    const value = translations[currentLang] && translations[currentLang][key];
+    if (value) {
+      el.textContent = value;
+    }
+  });
+
+  // плейсхолдеры
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    const value = translations[currentLang] && translations[currentLang][key];
+    if (value) {
+      el.placeholder = value;
+    }
+  });
+}
+
+function setLanguage(lang) {
+  if (!translations[lang]) return;
+  currentLang = lang;
+  localStorage.setItem("rb_lang", lang);
+
+  const currentLangIcon = document.getElementById("currentLangIcon");
+  if (currentLangIcon) {
+    currentLangIcon.src = `icons/flag-${lang}.png`;
+    currentLangIcon.alt = lang.toUpperCase();
+  }
+
+  applyTranslations();
+}
+
+function initLanguageFromStorage() {
+  const saved = localStorage.getItem("rb_lang") || "ru";
+  setLanguage(saved);
+}
+
+// ==== переключатель языка в сайдбаре ====
+document.addEventListener("DOMContentLoaded", () => {
+  const langToggle   = document.getElementById("langToggle");
+  const langDropdown = document.getElementById("langDropdown");
+
+  if (langToggle && langDropdown) {
+    langToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      langDropdown.classList.toggle("open");
+    });
+
+    document.querySelectorAll(".lang-option").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const lang = btn.getAttribute("data-lang");
+        setLanguage(lang);
+        langDropdown.classList.remove("open");
+      });
+    });
+
+    // клик вне – закрыть
+    document.addEventListener("click", () => {
+      langDropdown.classList.remove("open");
+    });
+  }
+});
 
 
 
@@ -6977,7 +7170,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <!-- МОДАЛКА "КАК ИГРАТЬ" ДЛЯ ROYAL MINES -->
 
 <div class="top-toast" id="topToast"></div>
-<audio id="minesMusic" src="audio/mines-bg.mp3" loop></audio>
+
 <div id="gameLoaderOverlay">
   <div class="game-loader-spinner"></div>
   <div class="game-loader-text">Загрузка…</div>
