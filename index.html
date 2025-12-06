@@ -1630,8 +1630,9 @@
 
 .games-filter-bar {
   max-width: 1400px;
-  margin: 32px auto 12px;
+  margin: 16px auto 8px; /* было 32px auto 12px */
 }
+
 
 .games-filter-inner {
   display: flex;
@@ -4084,42 +4085,7 @@
 <section class="games-filter-bar">
   <div class="games-filter-inner">
     <!-- ЛЕВАЯ ЧАСТЬ: КАТЕГОРИИ -->
-    <div class="games-filter-group">
-      <button class="games-filter-btn active" data-target="all">
-        <span class="games-filter-icon">
-          <img src="icons/all-games.png" alt="">
-        </span>
-        <span>Все игры</span>
-      </button>
-
-      <button class="games-filter-btn" data-target="slotsSection">
-        <span class="games-filter-icon">
-          <img src="icons/slots.png" alt="">
-        </span>
-        <span>Слоты</span>
-      </button>
-
-      <button class="games-filter-btn" data-target="newSection">
-        <span class="games-filter-icon">
-          <img src="icons/new.png" alt="">
-        </span>
-        <span>Новинки</span>
-      </button>
-
-      <button class="games-filter-btn" data-target="fastSection">
-        <span class="games-filter-icon">
-          <img src="icons/fast.png" alt="">
-        </span>
-        <span>Быстрые игры</span>
-      </button>
-
-      <button class="games-filter-btn" data-target="popularSection">
-        <span class="games-filter-icon">
-          <img src="icons/popular.png" alt="">
-        </span>
-        <span>Популярные</span>
-      </button>
-    </div>
+    
 
     <!-- ПРАВАЯ ЧАСТЬ: ПОИСК -->
     <div class="games-search">
@@ -4143,13 +4109,7 @@
 
 <!-- СЕКЦИЯ: СЛОТЫ -->
 <section class="games-section" id="slotsSection">
-  <div class="games-header">
-    <h2 class="games-title">Слоты</h2>
-    <div class="games-controls">
-      <button class="games-arrow games-arrow-prev">‹</button>
-      <button class="games-arrow games-arrow-next">›</button>
-    </div>
-  </div>
+  
 
   <div class="games-row">
 
@@ -4880,7 +4840,7 @@
                 <div class="pay-text">
                   <div class="pay-label">Ваш постоянный адрес</div>
                   <div class="pay-value-address" id="payAddress">
-                    TRKBMFY2PVENJjr7HdGQT9mxHSpW3xiMz3
+                    
                   </div>
                 </div>
               </div>
@@ -4899,9 +4859,9 @@
                   <div class="pay-value" id="payNetwork">Tron</div>
                 </div>
               </div>
-              <div class="pay-row-right">
+              <!-- <div class="pay-row-right">
                 <button class="pay-pill-btn">QR</button>
-              </div>
+              </div> -->
             </div>
 
             <div class="pay-warnings">
@@ -5354,6 +5314,33 @@
     const withdrawBalanceAmount = document.getElementById('withdrawBalanceAmount');
     const withdrawBalanceCode = document.getElementById('withdrawBalanceCode');
 
+    // ===== ВАЛЮТЫ И КУРСЫ =====
+// playerBalance считаем в долларах / USDT
+const CURRENCY_RATES = {
+  UAH: 41.96,   // пример, поставь свои реальные курсы
+  USD: 1,
+  EUR: 0.86
+};
+
+const CURRENCY_SYMBOLS = {
+  UAH: '₴',
+  USD: '$',
+  EUR: '€'
+};
+
+// текущая выбранная валюта (по умолчанию та, что в дропдауне)
+let currentCurrency = currencyCodeText
+  ? currencyCodeText.textContent.trim()
+  : 'UAH';
+
+// элементы баланса в попапе
+const balanceMainAmountEl = document.querySelector('.balance-main-amount');
+const bonusAmountEl       = document.querySelector('.bonus-amount');
+
+function formatAmount(value) {
+  return value.toFixed(2);
+}
+
      // ===== ГЛОБАЛЬНЫЙ БАЛАНС ИГРОКА =====
 // ===== ГЛОБАЛЬНЫЙ БАЛАНС ИГРОКА =====
 let playerBalance = 0; // стартовый, реальный баланс подтянем из API
@@ -5365,19 +5352,44 @@ const crashBalanceEl  = document.getElementById('crashBalance');
 const chickenBalanceEl = document.getElementById('chickenBalance');
 
 function updateAllBalancesUI() {
+  // конвертируем из базового playerBalance (USD/USDT) в выбранную валюту
+  const rate   = CURRENCY_RATES[currentCurrency] || 1;
+  const symbol = CURRENCY_SYMBOLS[currentCurrency] || '';
+
+  const converted = playerBalance * rate;
+
+  // шапка
   if (headerBalanceEl) {
-    headerBalanceEl.textContent = playerBalance.toFixed(2) + ' USDT';
+    // только число, без "USDT"
+    headerBalanceEl.textContent = formatAmount(converted);
   }
+
+  // балансы в играх (если надо, тоже в выбранной валюте)
   if (slotBalanceEl) {
-    slotBalanceEl.textContent = playerBalance.toFixed(2);
+    slotBalanceEl.textContent = formatAmount(converted);
   }
   if (crashBalanceEl) {
-    crashBalanceEl.textContent = playerBalance.toFixed(2);
+    crashBalanceEl.textContent = formatAmount(converted);
   }
   if (chickenBalanceEl) {
-    chickenBalanceEl.textContent = playerBalance.toFixed(2);
+    chickenBalanceEl.textContent = formatAmount(converted);
+  }
+
+  // попап баланса
+  if (balanceMainAmountEl) {
+    balanceMainAmountEl.textContent = formatAmount(converted) + symbol;
+  }
+  if (bonusAmountEl) {
+    // здесь можешь подставить реальный бонус, пока оставим 0
+    bonusAmountEl.textContent = '0.00' + symbol;
+  }
+
+  // символ возле баланса в шапке
+  if (walletCurrencySymbol) {
+    walletCurrencySymbol.textContent = symbol;
   }
 }
+
 
 
 
@@ -5435,23 +5447,28 @@ updateAllBalancesUI();
     });
 
     currencyDropdown.addEventListener('click', (e) => {
-      const item = e.target.closest('.currency-item');
-      if (!item) return;
+  const item = e.target.closest('.currency-item');
+  if (!item) return;
 
-      const code   = item.getAttribute('data-code');
-      const symbol = item.getAttribute('data-symbol');
+  const code = item.getAttribute('data-code');
 
-      currencyCodeText.textContent = code;
-      currencyLabel.textContent = code;
-      walletCurrencySymbol.textContent = symbol;
+  // запоминаем новую валюту
+  currentCurrency = code;
 
-      document.querySelectorAll('.balance-main-amount, .bonus-amount')
-        .forEach(el => {
-          el.textContent = '0.00' + symbol;
-        });
+  // обновляем подписи (код валюты под "Основной счёт" и в кнопке)
+  if (currencyCodeText) {
+    currencyCodeText.textContent = code;
+  }
+  if (currencyLabel) {
+    currencyLabel.textContent = code;
+  }
 
-      currencyDropdown.classList.remove('open');
-    });
+  // пересчитать все суммы по новому курсу
+  updateAllBalancesUI();
+
+  currencyDropdown.classList.remove('open');
+});
+
 
     // WALLET MODAL
     function openWalletModal() {
@@ -6801,6 +6818,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
-
 
 
