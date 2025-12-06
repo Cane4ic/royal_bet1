@@ -5617,6 +5617,49 @@ if (profileSaveBtn) {
   });
 }
 
+async function loadProfileData() {
+  const tgId = getTgId();
+  if (!tgId) {
+    console.warn("Нет tg_id, не можем загрузить профиль");
+    return;
+  }
+
+  try {
+    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/personal-data/get", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tg_id: Number(tgId) })
+    });
+
+    if (!resp.ok) {
+      // 404 — просто значит, что юзер ещё ничего не сохранял
+      console.warn("Ответ API /api/personal-data/get:", resp.status);
+      return;
+    }
+
+    const data = await resp.json();
+    console.log("Загружен профиль:", data);
+
+    if (profileFirstName) {
+      profileFirstName.value = data.first_name || "";
+    }
+    if (profileLastName) {
+      profileLastName.value = data.last_name || "";
+    }
+    if (profileBirthDate && data.birth_date) {
+      // backend отдаёт "YYYY-MM-DD" — можно ставить напрямую
+      profileBirthDate.value = data.birth_date;
+    }
+    if (profileGender && data.gender) {
+      profileGender.value = data.gender;
+    }
+  } catch (err) {
+    console.error("Ошибка при загрузке профиля:", err);
+  }
+}
+
    
 // function updateAllBalancesUI() {
 //   // шапка
@@ -7336,6 +7379,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tg.ready();
   }
   loadBalance();
+  loadProfileData();
 
   // ==== Telegram ID / имя ====
   const tgId   = getTgId();
