@@ -5566,11 +5566,114 @@ html, body {
 
   <script>
 
+     function getTgId() {
+    const tg = window.Telegram && window.Telegram.WebApp;
+    const fromTelegram = tg?.initDataUnsafe?.user?.id;
+
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = params.get("tg_id");
+
+    return fromTelegram || fromUrl || null;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // 2. Берём элементы ТОЛЬКО после того, как DOM построен
     const profileFirstName = document.getElementById('profileFirstName');
-const profileLastName  = document.getElementById('profileLastName');
-const profileBirthDate = document.getElementById('profileBirthDate');
-const profileGender    = document.getElementById('profileGender');
-const profileSaveBtn   = document.getElementById('profileSaveBtn');
+    const profileLastName  = document.getElementById('profileLastName');
+    const profileBirthDate = document.getElementById('profileBirthDate');
+    const profileGender    = document.getElementById('profileGender');
+    const profileSaveBtn   = document.getElementById('profileSaveBtn');
+
+    // === ФУНКЦИЯ ЗАГРУЗКИ ПРОФИЛЯ ===
+    async function loadProfileData() {
+      const tgId = getTgId();
+      if (!tgId) {
+        console.warn("Нет tg_id, не можем загрузить профиль");
+        return;
+      }
+
+      try {
+        const resp = await fetch("https://royal-api-8o0t.onrender.com/api/personal-data/get", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tg_id: Number(tgId) })
+        });
+
+        if (!resp.ok) {
+          console.warn("Ответ API /api/personal-data/get:", resp.status);
+          return;
+        }
+
+        const data = await resp.json();
+        console.log("Загружен профиль:", data);
+
+        if (profileFirstName) {
+          profileFirstName.value = data.first_name || "";
+        }
+        if (profileLastName) {
+          profileLastName.value = data.last_name || "";
+        }
+        if (profileBirthDate && data.birth_date) {
+          // backend отдаёт "YYYY-MM-DD"
+          profileBirthDate.value = data.birth_date;
+        }
+        if (profileGender && data.gender) {
+          profileGender.value = data.gender;
+        }
+      } catch (err) {
+        console.error("Ошибка при загрузке профиля:", err);
+      }
+    }
+
+    // === СОХРАНЕНИЕ ПРОФИЛЯ ===
+    if (profileSaveBtn) {
+      profileSaveBtn.addEventListener('click', async (e) => {
+        e.preventDefault?.();
+
+        const tgId = getTgId();
+        if (!tgId) {
+          console.warn("Нет tg_id, не можем сохранить профиль");
+          return;
+        }
+
+        const payload = {
+          tg_id: Number(tgId),
+          first_name: profileFirstName?.value.trim() || null,
+          last_name: profileLastName?.value.trim() || null,
+          birth_date: profileBirthDate?.value || null,  // "YYYY-MM-DD"
+          gender: profileGender?.value || null
+        };
+
+        try {
+          const resp = await fetch("https://royal-api-8o0t.onrender.com/api/personal-data/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await resp.json().catch(() => ({}));
+
+          if (!resp.ok) {
+            console.warn("Ошибка ответа API /api/personal-data/save:", resp.status, data);
+            alert("Ошибка сохранения: " + (data.detail || resp.status));
+            return;
+          }
+
+          console.log("Профиль сохранён:", data);
+          alert("Данные успешно сохранены");
+
+          // При желании — ещё раз подтянуть и синхронизировать поля с тем, что в БД:
+          // await loadProfileData();
+        } catch (err) {
+          console.error("Ошибка при сохранении профиля:", err);
+          alert("Ошибка сети при сохранении профиля");
+        }
+      });
+    }
+
+    // 3. При первом открытии страницы — грузим профиль
+    loadProfileData();
+  });
 
 if (profileSaveBtn) {
   profileSaveBtn.addEventListener('click', async (e) => {
