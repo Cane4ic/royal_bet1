@@ -103,17 +103,22 @@
     .menu-item { margin-bottom: 4px; }
 
     .menu-link {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: var(--menu-font-size);
-      color: var(--text-main);
-      text-decoration: none;
-      cursor: pointer;
-      transition: background .16s, color .16s;
-    }
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: var(--menu-font-size);
+  color: var(--text-main);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .16s, color .16s;
+
+  background: transparent;   /* убрать белый фон кнопки */
+  border: none;              /* убрать стандартную рамку */
+  width: 100%;               /* чтобы вся строка кликалась */
+  text-align: left;
+}
 
     .menu-link:hover {
       background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
@@ -1334,7 +1339,7 @@
     height: 36px;
   }
 
-  .mobile-burger { display: inline-flex; }
+  .mobile-burger { display: none; }
 
   .balance-panel {
     width: calc(100vw - 24px);
@@ -3992,7 +3997,7 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 4;
   z-index: 60;
   background: #111318;
   border-top: 1px solid #20232a;
@@ -4041,9 +4046,7 @@
   <aside class="sidebar">
   <div class="sidebar-top">
     <button class="burger-btn" id="sidebarCloseBtn">✕</button>
-    <div class="mode-switch">
-      <button>Меню Royal Bet</button>
-    </div>
+    
   </div>
 
   <div class="sidebar-scroll">
@@ -4103,6 +4106,8 @@
       </ul>
     </div>
 
+<ul>
+
     <!-- Соцсети -->
     <div class="menu-section">
       <div class="menu-section-title">Соцсети</div>
@@ -4138,7 +4143,7 @@
 </aside>
 
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-
+</ul>
 
   <!-- TOP BAR -->
   <header class="top-bar">
