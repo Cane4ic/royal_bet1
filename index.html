@@ -5285,28 +5285,28 @@
     
 
    
-function updateAllBalancesUI() {
-  // шапка
-  if (headerBalanceEl) {
-    // если хочешь с копейками:
-    headerBalanceEl.textContent = playerBalance.toFixed(2);
-  }
+// function updateAllBalancesUI() {
+//   // шапка
+//   if (headerBalanceEl) {
+//     // если хочешь с копейками:
+//     headerBalanceEl.textContent = playerBalance.toFixed(2);
+//   }
 
-  // в слотах
-  if (slotBalanceEl) {
-    slotBalanceEl.textContent = playerBalance.toFixed(0) + '';
-  }
+//   // в слотах
+//   if (slotBalanceEl) {
+//     slotBalanceEl.textContent = playerBalance.toFixed(0) + '';
+//   }
 
-  // в Crash Royal
-  if (crashBalanceEl) {
-    crashBalanceEl.textContent = playerBalance.toFixed(0) + '';
-  }
+//   // в Crash Royal
+//   if (crashBalanceEl) {
+//     crashBalanceEl.textContent = playerBalance.toFixed(0) + '';
+//   }
 
-  // в Chicken Road
-  if (chickenBalanceEl) {
-    chickenBalanceEl.textContent = playerBalance.toFixed(0) + '';
-  }
-}
+//   // в Chicken Road
+//   if (chickenBalanceEl) {
+//     chickenBalanceEl.textContent = playerBalance.toFixed(0) + '';
+//   }
+// }
 
     const sidebar = document.querySelector('.sidebar');
     const sidebarBackdrop = document.getElementById('sidebarBackdrop');
@@ -5379,15 +5379,7 @@ function updateAllBalancesUI() {
   }
 }
 
-function changePlayerBalance(delta) {
-  // локально обновили
-  playerBalance += delta;
-  if (playerBalance < 0) playerBalance = 0;
-  updateAllBalancesUI();
 
-  // отправили на сервер (fire-and-forget, ничего не ждём)
-  sendBalanceDelta(delta);
-}
 
 
 // сразу при старте один раз синхронизируем UI
@@ -6631,17 +6623,29 @@ if (wheelBackBtn) {
 
   
 
-  // ===== TELEGRAM WEB APP: ЗАГРУЗКА БАЛАНСА =====
+  // ===== TELEGRAM WEB APP / BALANCE API =====
 
-// одна функция, которая всё делает
-async function loadBalance() {
+// 1. общий способ получить tg_id (из Telegram или из URL ?tg_id=...)
+function getTgId() {
   const tg = window.Telegram && window.Telegram.WebApp;
-  const tgUserId = tg?.initDataUnsafe?.user?.id || null;
+  const fromTelegram = tg?.initDataUnsafe?.user?.id;
 
-  console.log("Telegram user id in loadBalance:", tgUserId);
+  const params = new URLSearchParams(window.location.search);
+  const fromUrl = params.get("tg_id");
 
-  if (!tgUserId) {
-    console.warn("Нет tgUserId – WebApp не внутри Telegram?");
+  console.log("tg id from Telegram:", fromTelegram);
+  console.log("tg id from URL:", fromUrl);
+
+  return fromTelegram || fromUrl || null;
+}
+
+// 2. загрузка баланса при входе в WebApp
+async function loadBalance() {
+  const tgId = getTgId();
+  console.log("Telegram user id in loadBalance:", tgId);
+
+  if (!tgId) {
+    console.warn("Нет tgId – WebApp не внутри Telegram или не передали в URL");
     return;
   }
 
@@ -6651,11 +6655,11 @@ async function loadBalance() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ tg_id: tgUserId })
+      body: JSON.stringify({ tg_id: Number(tgId) })
     });
 
     if (!resp.ok) {
-      console.warn("Ошибка ответа API:", resp.status);
+      console.warn("Ошибка ответа API /api/balance:", resp.status);
       return;
     }
 
@@ -6669,17 +6673,11 @@ async function loadBalance() {
   }
 }
 
-// Стартовая инициализация
-document.addEventListener("DOMContentLoaded", () => {
-  const tg = window.Telegram && window.Telegram.WebApp;
-  if (tg) {
-    tg.ready();
-  }
-  loadBalance();
-});
-
+// 3. отправка изменения баланса на сервер (игры: ставка / выигрыш)
 async function sendBalanceDelta(delta) {
   const tgId = getTgId();
+  console.log("sendBalanceDelta called with:", delta, "tgId:", tgId);
+
   if (!tgId) {
     console.warn("Нет tgId при отправке delta");
     return;
@@ -6698,14 +6696,14 @@ async function sendBalanceDelta(delta) {
     });
 
     if (!resp.ok) {
-      console.warn("Ошибка change-balance:", resp.status);
+      console.warn("Ошибка ответа API /api/change-balance:", resp.status);
       return;
     }
 
     const data = await resp.json();
     const balance = Number(data.balance || 0);
 
-    // синхронизируем локальное состояние с БД
+    // синхронизируем локальный баланс с БД
     playerBalance = balance;
     updateAllBalancesUI();
   } catch (e) {
@@ -6713,7 +6711,27 @@ async function sendBalanceDelta(delta) {
   }
 }
 
+// 4. единственная функция, которой пользуются все игры
+function changePlayerBalance(delta) {
+  console.log("changePlayerBalance, delta:", delta);
 
+  // локально обновили
+  playerBalance += delta;
+  if (playerBalance < 0) playerBalance = 0;
+  updateAllBalancesUI();
+
+  // и отправили на сервер
+  sendBalanceDelta(delta);
+}
+
+// 5. стартовая инициализация
+document.addEventListener("DOMContentLoaded", () => {
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (tg) {
+    tg.ready();
+  }
+  loadBalance();
+});
 
 
 
@@ -6736,4 +6754,5 @@ async function sendBalanceDelta(delta) {
 
 </body>
 </html>
+
 
