@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Royal Bet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -105,7 +105,7 @@
     .menu-link {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   padding: 10px 14px;
   border-radius: 10px;
   font-size: var(--menu-font-size);
@@ -138,6 +138,15 @@
       object-fit: contain;
       display: block;
     }
+
+    .menu-icon {
+  width: 24px;             /* фиксированная ширина = ровный текст */
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;          /* чтобы иконка не сжималась */
+}
 
     .divider {
       height: 1px;
@@ -290,7 +299,7 @@
 
 .logo-text {
   font-family: "Times New Roman", serif;  /* можно подобрать другой шрифт */
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -306,12 +315,12 @@
 }
 
 .logo-underline {
-  margin-top: 4px;
+  margin-top: 6px;
   height: 3px;
   border-radius: 999px;
   background: linear-gradient(90deg, #ffd84a, #ff9a2b);
   width: 100%;
-  max-width: 150px;   /* длина полоски, можно менять */
+  max-width: 100px;   /* длина полоски, можно менять */
 }
 
     .top-bar-right {
@@ -1376,8 +1385,8 @@
     top: auto;
     bottom: 0;
     width: 100%;
-    height: 75vh;
-    max-height: 520px;
+    height: 190vh;
+    max-height: 750px;
     border-right: none;
     border-top: 1px solid #20232a;
     border-radius: 18px 18px 0 0;
@@ -1422,7 +1431,7 @@
   /* ... твои существующие правила ... */
 
   .logo-text span {
-    font-size: 20px;
+    font-size: 15px;
     letter-spacing: 0.10em;
   }
 
@@ -4109,11 +4118,11 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 4px;
+  bottom: 0px;
   z-index: 60;
   background: #111318;
   border-top: 1px solid #20232a;
-  padding: 6px 12px 10px;
+  padding: 10px 12px 22px;
   display: none;                  /* будет только на мобилке */
   justify-content: space-between;
   gap: 10px;
@@ -4151,6 +4160,20 @@
   }
 }
 
+body.menu-open {
+  overflow: hidden;
+  height: 100vh;
+  touch-action: none; /* важно для мобильных */
+}
+
+html, body {
+  touch-action: manipulation;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
   </style>
 </head>
 <body>
@@ -4164,7 +4187,7 @@
   <div class="sidebar-scroll">
     <!-- Меню -->
     <div class="menu-section">
-      <div class="menu-section-title">Меню</div>
+      
       <ul class="menu-list">
         <li class="menu-item">
           <button class="menu-link" data-nav="main">
@@ -4179,7 +4202,7 @@
             <span class="menu-icon">
               <img src="icons/fav.png" alt="">
             </span>
-            Избраное
+            Избранное
           </button>
         </li>
         <li class="menu-item">
@@ -4195,53 +4218,69 @@
 
     <!-- Игры -->
     <div class="menu-section">
-      <div class="menu-section-title">Игры</div>
-      <ul class="menu-list">
-        <li class="menu-item">
-          </button>
-    </li>
+  <div class="menu-section-title">Игры</div>
+  <ul class="menu-list">
     <li class="menu-item">
       <button class="menu-link" data-game="dice">
-        <span class="menu-icon"></span>
+        <span class="menu-icon">
+          <img src="icons/game-dice.png" alt="Dice">
+        </span>
         <span>Dice</span>
       </button>
     </li>
+
     <li class="menu-item">
       <button class="menu-link" data-game="roulettex100">
-        <span class="menu-icon"></span>
+        <span class="menu-icon">
+          <img src="icons/game-roulette.png" alt="Roulette X100">
+        </span>
         <span>Roulette X100</span>
       </button>
     </li>
+
     <li class="menu-item">
       <button class="menu-link" data-game="royalmines">
-        <span class="menu-icon"></span>
+        <span class="menu-icon">
+          <img src="icons/game-mines.png" alt="Royal Mines">
+        </span>
         <span>Royal Mines</span>
       </button>
     </li>
+
     <li class="menu-item">
       <button class="menu-link" data-game="crashroyal">
-        <span class="menu-icon"></span>
+        <span class="menu-icon">
+          <img src="icons/game-crash.png" alt="Crash Royal">
+        </span>
         <span>Crash Royal</span>
       </button>
     </li>
+
     <li class="menu-item">
       <button class="menu-link" data-game="coinflip">
-        <span class="menu-icon"></span>
+        <span class="menu-icon">
+          <img src="icons/game-coinflip.png" alt="Coin Flip">
+        </span>
         <span>Coin Flip</span>
       </button>
     </li>
+
     <li class="menu-item">
       <button class="menu-link" data-game="slotsroyal">
-        <span class="menu-icon"></span>
+        <span class="menu-icon">
+          <img src="icons/game-slots.png" alt="Slots Royal">
+        </span>
         <span>Slots Royal</span>
       </button>
-        </li>
-      </ul>
-    </div>
+    </li>
+  </ul>
+</div>
 
 <ul>
 
-    <!-- Соцсети -->
+    
+
+  <div class="sidebar-bottom">
     <div class="menu-section">
       <div class="menu-section-title">Соцсети</div>
       <div class="sidebar-socials">
@@ -4260,8 +4299,6 @@
       </div>
     </div>
   </div>
-
-  <div class="sidebar-bottom">
   <div class="divider"></div>
   <div class="bottom-row">
 
@@ -4469,21 +4506,21 @@
       <div class="profile-form-grid">
         <div class="form-field">
           <label class="form-label">Имя</label>
-          <input class="form-input" type="text" placeholder="Ваше имя">
+          <input class="form-input" type="text" id="profileFirstName" placeholder="Ваше имя">
         </div>
         <div class="form-field">
           <label class="form-label">Фамилия</label>
-          <input class="form-input" type="text" placeholder="Ваша фамилия">
+          <input class="form-input" type="text" id="profileLastName" placeholder="Ваша фамилия">
         </div>
 
         <div class="form-field">
           <label class="form-label">Дата рождения</label>
-          <input class="form-input" type="date">
+          <input class="form-input" type="date" id="profileBirthDate">
         </div>
 
         <div class="form-field">
           <label class="form-label">Пол</label>
-          <select class="form-select">
+          <select class="form-select" id="profileGender">
             <option value="" selected disabled>Выберите</option>
             <option value="male">Мужской</option>
             <option value="female">Женский</option>
@@ -4492,7 +4529,7 @@
         </div>
       </div>
 
-      <button class="profile-save-btn">Сохранить</button>
+      <button class="profile-save-btn" id="profileSaveBtn">Сохранить</button>
     </section>
 
     <!-- ТАБ "БЕЗОПАСНОСТЬ" -->
@@ -5529,7 +5566,53 @@
 
   <script>
 
-    
+    const profileFirstName = document.getElementById('profileFirstName');
+const profileLastName  = document.getElementById('profileLastName');
+const profileBirthDate = document.getElementById('profileBirthDate');
+const profileGender    = document.getElementById('profileGender');
+const profileSaveBtn   = document.getElementById('profileSaveBtn');
+
+if (profileSaveBtn) {
+  profileSaveBtn.addEventListener('click', async () => {
+    const tgId = getTgId();
+    if (!tgId) {
+      console.warn("Нет tg_id, не можем сохранить профиль");
+      return;
+    }
+
+    const payload = {
+      tg_id: Number(tgId),
+      first_name: profileFirstName.value.trim(),
+      last_name: profileLastName.value.trim(),
+      birth_date: profileBirthDate.value,  // формат YYYY-MM-DD
+      gender: profileGender.value || null
+    };
+
+    try {
+      const resp = await fetch("https://royal-api-8o0t.onrender.com/api/profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!resp.ok) {
+        console.warn("Ошибка ответа API /api/profile:", resp.status);
+        return;
+      }
+
+      const data = await resp.json();
+      console.log("Профиль сохранён:", data);
+
+      // здесь можно показать уведомление пользователю
+      // например:
+      // alert("Данные успешно сохранены");
+    } catch (err) {
+      console.error("Ошибка при сохранении профиля:", err);
+    }
+  });
+}
 
    
 // function updateAllBalancesUI() {
@@ -5554,6 +5637,10 @@
 //     chickenBalanceEl.textContent = playerBalance.toFixed(0) + '';
 //   }
 // }
+
+const profileNameEl   = document.getElementById('profileName');
+const profileIdValue  = document.getElementById('profileIdValue');
+
 
     const sidebar = document.querySelector('.sidebar');
     const sidebarBackdrop = document.getElementById('sidebarBackdrop');
@@ -5697,8 +5784,9 @@ updateAllBalancesUI();
     };
 
     function toggleSidebar() {
-      sidebar.classList.toggle('open');
-      sidebarBackdrop.classList.toggle('open');
+      const isOpen = sidebar.classList.toggle('open');
+
+  document.body.classList.toggle('menu-open', isOpen);
     }
 
     burgerToggle.addEventListener('click', toggleSidebar);
@@ -7231,7 +7319,50 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+if (telegramId) {
+  const nameEl = document.querySelector('.profile-name');
+  const idEl = document.querySelector('.profile-id');
 
+  nameEl.textContent = username ? `@${username}` : `Player`;
+  idEl.textContent = `ID: ${telegramId}`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (tg) {
+    tg.ready();
+  }
+  loadBalance();
+
+  // ==== Telegram ID / имя ====
+  const tgId   = getTgId();
+  const tgUser = tg?.initDataUnsafe?.user;
+
+  // Имя в профиле
+  if (profileNameEl && tgUser) {
+    const fullName = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ");
+    if (fullName) {
+      profileNameEl.textContent = fullName;
+    }
+  }
+
+  // Подставляем ID
+  if (profileIdValue && tgId) {
+    profileIdValue.textContent = tgId;
+  }
+
+  // Кнопка "Копировать мой ID"
+  if (copyIdBtn && tgId) {
+    copyIdBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(String(tgId));
+        console.log("ID скопирован:", tgId);
+      } catch (e) {
+        console.warn("Не удалось скопировать ID:", e);
+      }
+    });
+  }
+});
 
 
 
