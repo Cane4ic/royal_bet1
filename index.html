@@ -15,7 +15,7 @@
   --text-soft: #9aa0ac;
   --font: 'Inter', sans-serif;
   --menu-font-size: 16px;
-  --tg-top-safe-area: 0px;   /* единственная переменная */
+  
 }
 
     * {
@@ -275,7 +275,7 @@
   position: fixed;
   left: 260px;
   right: 0;
-  top: var(--tg-top-safe-area);  /* вместо top: 0 */
+  top: 0;
   padding: 10px 24px;
   display: flex;
   align-items: center;
@@ -1422,7 +1422,7 @@
 
   .top-bar {
     left: 0;
-    top: var(--tg-top-safe-area);  /* вместо top: 0 */
+    top: 0;
     padding: 8px 10px;
   }
 
@@ -5598,37 +5598,7 @@ html, body {
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <script>
-  // 1) Сначала объявляем tg
-  const tg = window.Telegram && window.Telegram.WebApp;
-
-  // 2) Функция, считающая отступ сверху
-  function applySafeArea() {
-    if (!tg) return;
-
-    const insetTop    = (tg.safeAreaInset && tg.safeAreaInset.top)    || 0;
-    const insetBottom = (tg.safeAreaInset && tg.safeAreaInset.bottom) || 0;
-
-    let headerHeight = 0;
-
-    // viewportStableHeight — высота зоны без перекрытий
-    if (tg.viewportStableHeight && window.innerHeight) {
-      const totalOverlay = window.innerHeight - tg.viewportStableHeight;
-      // вычитаем нижний safeArea, остаётся "шапка" сверху
-      headerHeight = Math.max(0, totalOverlay - insetBottom);
-    }
-
-    const topOffset = insetTop + headerHeight;
-
-    document.documentElement.style
-      .setProperty('--tg-top-safe-area', topOffset + 'px');
-  }
-
-  // 3) Подписываемся один раз
-  if (tg) {
-    tg.ready();
-    applySafeArea();
-    tg.onEvent('viewportChanged', applySafeArea);
-  }
+  
 
 
      function getTgId() {
