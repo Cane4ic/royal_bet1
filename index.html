@@ -5610,23 +5610,38 @@ html, body {
   }
 
   // Инициализация Telegram WebApp + safe area
+// Инициализация Telegram WebApp + safe area / header offset
 const tg = window.Telegram && window.Telegram.WebApp;
 
 function applySafeArea() {
-  if (!tg || !tg.safeAreaInset) return;
+  if (!tg) return;
 
-  const top = tg.safeAreaInset.top || 0;
-  document.documentElement.style.setProperty('--tg-top-safe-area', top + 'px');
+  const insetTop    = (tg.safeAreaInset && tg.safeAreaInset.top)    || 0;
+  const insetBottom = (tg.safeAreaInset && tg.safeAreaInset.bottom) || 0;
+
+  let headerHeight = 0;
+
+  // viewportStableHeight = высота области, где точно нет системных панелей
+  if (tg.viewportStableHeight && window.innerHeight) {
+    const totalOverlay = window.innerHeight - tg.viewportStableHeight;
+    // сверху шапка Телеги + сверху/снизу safeArea. Нижнюю часть вычитаем.
+    headerHeight = Math.max(0, totalOverlay - insetBottom);
+  }
+
+  const topOffset = insetTop + headerHeight;
+
+  document.documentElement.style
+    .setProperty('--tg-top-safe-area', topOffset + 'px');
 }
 
 if (tg) {
   tg.ready();
   applySafeArea();
 
-  // если safe area меняется (поворот, фуллскрин и т.п.)
-  tg.onEvent('safeAreaChanged', applySafeArea);
-  tg.onEvent('fullscreenChanged', applySafeArea);
+  // реагируем на изменение вёрстки WebApp (раскрытие, сворачивание и т.п.)
+  tg.onEvent('viewportChanged', applySafeArea);
 }
+
 
   const twofaStatusText = document.getElementById('twofaStatusText');
 const twofaStartBtn   = document.getElementById('twofaStartBtn');
