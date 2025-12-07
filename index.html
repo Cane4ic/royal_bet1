@@ -31,7 +31,7 @@
   font-family: var(--font);
   color: var(--text-main);
 
-  padding-top: var(--tg-header-height);
+  padding-top: var(--tg-safe-top); /* <-- добавили */
 }
 
     /* ----------- САЙДБАР ----------- */
@@ -5603,28 +5603,31 @@ html, body {
 
     
 
-  function applyTelegramHeaderOffset() {
-    if (!tg) return;
+  
 
-    // общая высота перекрытия (шапка Telegram)
-    const headerHeight =
-      (window.innerHeight || 0) -
-      (tg.viewportStableHeight || window.innerHeight);
+  // Telegram WebApp: отступ сверху под шапку Telegram
 
-    const safeHeader = Math.max(0, headerHeight);
 
-    document.documentElement.style.setProperty(
-      '--tg-header-height',
-      safeHeader + 'px'
-    );
-  }
+function applySafeTopInset() {
+  if (!tg || !tg.viewportStableHeight) return;
 
-  if (tg) {
-    tg.ready();
+  const insetTop = (tg.safeAreaInset && tg.safeAreaInset.top) || 0;
+  const viewportStableHeight = tg.viewportStableHeight;
+  const headerHeight = window.innerHeight - viewportStableHeight;
 
-    applyTelegramHeaderOffset();
-    tg.onEvent('viewportChanged', applyTelegramHeaderOffset);
-  }
+  // всё, что перекрывает сверху: верхний inset + «шапка»
+  const topOffset = Math.max(0, insetTop + headerHeight);
+
+  document.documentElement.style
+    .setProperty('--tg-safe-top', topOffset + 'px');
+}
+
+if (tg) {
+  tg.ready();
+  applySafeTopInset();
+  tg.onEvent('viewportChanged', applySafeTopInset);
+}
+
 
      function getTgId() {
     const tg = window.Telegram && window.Telegram.WebApp;
