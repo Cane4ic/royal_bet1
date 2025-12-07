@@ -4176,6 +4176,24 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
+.bonus-page-card {
+  background: #191b23;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.bonus-page-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.bonus-page-card-sub {
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
   </style>
 </head>
 <body>
@@ -4567,6 +4585,35 @@ html, body {
 </div>
     </section>
   </main>
+
+  <main class="page-content" id="bonusesPage" style="display:none">
+  <div class="profile-section">
+    <div class="profile-section-header">
+      <button class="profile-back-btn" id="bonusesBackBtn">
+        ←
+      </button>
+      <h2 class="profile-section-title">Бонусы</h2>
+    </div>
+
+    <div class="profile-section-body">
+      <div class="bonus-page-card">
+        <div class="bonus-page-card-title">Приветственный бонус</div>
+        <div class="bonus-page-card-sub">
+          400% + 200 фриспинов на первые депозиты
+        </div>
+      </div>
+
+      <div class="bonus-page-card">
+        <div class="bonus-page-card-title">Кэшбэк</div>
+        <div class="bonus-page-card-sub">
+          Еженедельный возврат части проигранных средств.
+        </div>
+      </div>
+
+      <!-- сюда потом можно добавить реальные данные с backend -->
+    </div>
+  </div>
+</main>
 
   <!-- СТРАНИЦА ИГРЫ CRASH ROYAL -->
 <main class="page-content" id="crashRoyalPage" style="display:none;">
@@ -4978,173 +5025,93 @@ html, body {
           <div class="deposit-select" id="depositSelectStep">
             <div class="wallet-deposit-subtitle">Криптовалюта</div>
             <div class="crypto-grid" id="cryptoGrid">
-              <!-- Пример карт -->
-              <div class="crypto-card"
-                   data-network="Tron"
-                   data-min="15.00"
-                   data-symbol="USDTTRC20">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">USDT</div>
-                    <div class="crypto-sub">(TRC20)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-trc20.png" alt="USDT TRC20">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/tron.png" alt="TRON">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crypto-card"
-                   data-network="BEP20"
-                   data-min="15.00"
-                   data-symbol="USDTBEP20">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">USDT</div>
-                    <div class="crypto-sub">(BEP20)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-bep20.png" alt="USDT BEP20">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/bsc.png" alt="BSC">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crypto-card"
-                   data-network="TON"
-                   data-min="15.00"
-                   data-symbol="USDTTON">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">USDT</div>
-                    <div class="crypto-sub">(Toncoin)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-toncoin.png" alt="USDT TONCOIN">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/ton.png" alt="TON">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crypto-card"
-                   data-network="TON"
-                   data-min="7.50"
-                   data-symbol="TONCOIN">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">TON</div>
-                    <div class="crypto-sub">(Toncoin)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-toncoin.png" alt="TONCOIN">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/ton.png" alt="TON">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crypto-card"
-                   data-network="ETH"
-                   data-min="0.075"
-                   data-symbol="ETH">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">ETH</div>
-                    <div class="crypto-sub">(Ethereum)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-ethereum.png" alt="ETHEREUM">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/eth.png" alt="ETH">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crypto-card"
-                   data-network="TRX"
-                   data-min="15.00"
-                   data-symbol="TRX">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">TRX</div>
-                    <div class="crypto-sub">(Tron)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-tron.png" alt="TRON">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/trx.png" alt="TRX">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- добавь остальные монеты по этому же шаблону -->
-            </div>
+  <!-- USDT TRC20 -->
+  <div class="crypto-card"
+       data-network="TRC20"
+       data-min="10.00"
+       data-symbol="USDT">
+    <div class="crypto-card-main">
+      <div class="crypto-text">
+        <div class="crypto-name">USDT</div>
+        <div class="crypto-sub">Сеть TRC20</div>
+      </div>
+      <div class="crypto-icons">
+        <div class="crypto-icon-wrap">
+          <div class="crypto-coin">
+            <img src="coins/usdt-trc20.png" alt="">
           </div>
+          <div class="crypto-network">
+            <img src="networks/tron.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="crypto-bottom">
+      <div class="crypto-bonus-pill">
+        <img src="icons/bonus.svg" alt="">
+        <span>+400% и 200 FS</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TON -->
+  <div class="crypto-card"
+       data-network="TON"
+       data-min="5.00"
+       data-symbol="TON">
+    <div class="crypto-card-main">
+      <div class="crypto-text">
+        <div class="crypto-name">TON</div>
+        <div class="crypto-sub">Toncoin сеть</div>
+      </div>
+      <div class="crypto-icons">
+        <div class="crypto-icon-wrap">
+          <div class="crypto-coin">
+            <img src="coins/ton.png" alt="">
+          </div>
+          <div class="crypto-network">
+            <img src="networks/ton.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="crypto-bottom">
+      <div class="crypto-bonus-pill">
+        <img src="icons/bonus.svg" alt="">
+        <span>+400% и 200 FS</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Binance Pay -->
+  <div class="crypto-card"
+       data-network="Binance Pay"
+       data-min="15.00"
+       data-symbol="USDT">
+    <div class="crypto-card-main">
+      <div class="crypto-text">
+        <div class="crypto-name">Binance Pay</div>
+        <div class="crypto-sub">USDT через Binance</div>
+      </div>
+      <div class="crypto-icons">
+        <div class="crypto-icon-wrap">
+          <div class="crypto-coin">
+            <img src="coins/binance-pay.png" alt="">
+          </div>
+          <div class="crypto-network">
+            <img src="networks/binance.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="crypto-bottom">
+      <div class="crypto-bonus-pill">
+        <img src="icons/bonus.svg" alt="">
+        <span>+400% и 200 FS</span>
+      </div>
+    </div>
+  </div>
+</div>
 
           <div class="deposit-payment" id="depositPaymentStep">
             <div class="pay-row">
@@ -5342,16 +5309,7 @@ html, body {
         <div class="wallet-tab-panel" data-panel="history">
           <div class="wallet-deposit-subtitle">История операций</div>
           <div class="history-list">
-            <div class="history-item">
-              <div class="h-left">
-                <div class="h-type">Депозит USDTTRC20</div>
-                <div class="h-meta">10.00 • Tron • 10.12.2025, 16:45</div>
-              </div>
-              <div>
-                <div class="h-amount">+10.00</div>
-                <div class="h-status">Зачислено</div>
-              </div>
-            </div>
+            
           </div>
         </div>
 
@@ -6041,6 +5999,50 @@ const bottomBonusBtn   = document.getElementById('bottomBonusBtn');
 const bottomWalletBtn  = document.getElementById('bottomWalletBtn');
 const bottomMenuBtn    = document.getElementById('bottomMenuBtn');
 
+function closeSidebar() {
+  if (!sidebar) return;
+  sidebar.classList.remove('open');
+  sidebarBackdrop?.classList.remove('open');
+}
+
+if (bottomProfileBtn) {
+  bottomProfileBtn.addEventListener('click', () => {
+    showOnlyPage(profilePage);
+    closeSidebar();
+  });
+}
+
+if (bottomBonusBtn) {
+  bottomBonusBtn.addEventListener('click', () => {
+    showOnlyPage(bonusesPage);
+    closeSidebar();
+  });
+}
+
+const bonusesBackBtn = document.getElementById('bonusesBackBtn');
+if (bonusesBackBtn) {
+  bonusesBackBtn.addEventListener('click', () => {
+    showOnlyPage(mainPage);
+  });
+}
+
+const sidebarNavLinks = document.querySelectorAll('.menu-link[data-nav]');
+
+sidebarNavLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    const nav = link.dataset.nav;
+    if (nav === 'profile') {
+      showOnlyPage(profilePage);
+    } else if (nav === 'bonuses') {
+      showOnlyPage(bonusesPage);
+    } else {
+      // по умолчанию — главная
+      showOnlyPage(mainPage);
+    }
+    closeSidebar();
+  });
+});
+
 
     const walletBtn = document.getElementById('walletBtn');
     const balanceOverlay = document.getElementById('balanceOverlay');
@@ -6271,18 +6273,22 @@ if (bottomMenuBtn) {
     });
 
     function setActiveTab(tabName) {
-      walletTabs.forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.tab === tabName);
-      });
-      walletPanels.forEach(panel => {
-        panel.classList.toggle('active', panel.dataset.panel === tabName);
-      });
+  walletTabs.forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.tab === tabName);
+  });
+  walletPanels.forEach(panel => {
+    panel.classList.toggle('active', panel.dataset.panel === tabName);
+  });
 
-      if (tabName !== 'deposit') {
-        walletBackBtn.classList.add('hidden');
-        walletModalTitle.textContent = tabName === 'withdraw' ? 'Вывод' : 'История';
-      }
-    }
+  if (tabName !== 'deposit') {
+    walletBackBtn.classList.add('hidden');
+    walletModalTitle.textContent = tabName === 'withdraw' ? 'Вывод' : 'История';
+  }
+
+  if (tabName === 'history') {
+    loadWalletHistory();
+  }
+}
 
     walletTabs.forEach(tab => {
       tab.addEventListener('click', () => {
@@ -6326,6 +6332,8 @@ if (bottomMenuBtn) {
     }
   });
 }
+
+
 
 
     walletBackBtn.addEventListener('click', openDepositSelectStep);
@@ -6392,6 +6400,114 @@ if (bottomMenuBtn) {
         withdrawDropdown.classList.remove('open');
       }
     });
+
+    const historyList = document.getElementById('historyList');
+
+async function loadWalletHistory() {
+  if (!historyList) return;
+
+  const tgId = getTgId();
+  if (!tgId) {
+    console.warn("Нет tg_id, не можем загрузить историю");
+    return;
+  }
+
+  historyList.innerHTML = `
+    <div class="history-item">
+      <div class="h-left">
+        <div class="h-type">Загрузка…</div>
+      </div>
+    </div>
+  `;
+
+  try {
+    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/deposit/history", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tg_id: Number(tgId) })
+    });
+
+    if (!resp.ok) {
+      console.warn("Ошибка ответа /api/deposit/history:", resp.status);
+      historyList.innerHTML = `
+        <div class="history-item">
+          <div class="h-left">
+            <div class="h-type">Не удалось загрузить историю</div>
+            <div class="h-meta">Попробуйте позже или напишите в поддержку</div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    const items = await resp.json(); // ожидаем массив
+
+    if (!items.length) {
+      historyList.innerHTML = `
+        <div class="history-item">
+          <div class="h-left">
+            <div class="h-type">Пока нет депозитов</div>
+            <div class="h-meta">Как только пополните баланс, операции появятся здесь</div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    historyList.innerHTML = "";
+
+    items.forEach((tx) => {
+      const div = document.createElement("div");
+      div.className = "history-item";
+
+      const amount = Number(tx.amount || 0);
+      const currency = tx.currency || "USDT";
+      const network = tx.network || tx.method || "";
+      const createdAt = tx.created_at ? new Date(tx.created_at) : null;
+      const status = tx.status || "pending";
+
+      const dateStr = createdAt
+        ? createdAt.toLocaleString("ru-RU", {
+            day: "2-digit",
+            month: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit"
+          })
+        : "";
+
+      div.innerHTML = `
+        <div class="h-left">
+          <div class="h-type">Депозит ${currency}</div>
+          <div class="h-meta">
+            ${amount.toFixed(2)} ${currency}
+            ${network ? " • " + network : ""}
+            ${dateStr ? " • " + dateStr : ""}
+          </div>
+        </div>
+        <div class="h-right">
+          <div class="h-amount">+${amount.toFixed(2)}</div>
+          <div class="h-status">${status === "success" ? "Зачислен" :
+                                   status === "pending" ? "В ожидании" :
+                                   "Отклонён"}</div>
+        </div>
+      `;
+
+      historyList.appendChild(div);
+    });
+  } catch (err) {
+    console.error("Ошибка при загрузке истории:", err);
+    historyList.innerHTML = `
+      <div class="history-item">
+        <div class="h-left">
+          <div class="h-type">Ошибка сети</div>
+          <div class="h-meta">Проверьте интернет и попробуйте ещё раз</div>
+        </div>
+      </div>
+    `;
+  }
+}
 
     /* ===== ОДИН АДАПТИВНЫЙ ПРОМО-БАННЕР ===== */
 
@@ -6548,6 +6664,15 @@ function showOnlyPage(pageEl) {
     const profilePage = document.getElementById('profilePage');
     const profileAvatar = document.querySelector('.profile-avatar');
     const profileBackBtn = document.getElementById('profileBackBtn');
+    const bonusesPage = document.getElementById('bonusesPage');
+
+    function showOnlyPage(page) {
+  const pages = [mainPage, profilePage, bonusesPage];
+  pages.forEach(p => {
+    if (!p) return;
+    p.style.display = (p === page) ? 'block' : 'none';
+  });
+}
 
     if (profileAvatar && mainPage && profilePage && profileBackBtn) {
   // Открыть профиль по клику на аватар
