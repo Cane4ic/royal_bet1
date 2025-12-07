@@ -17,6 +17,7 @@
 
       --font: 'Inter', sans-serif;
       --menu-font-size: 16px;
+      --tg-top-safe-area: 0px;
     }
 
     * {
@@ -273,7 +274,7 @@
   position: fixed;
   left: 260px;
   right: 0;
-  top: 0;
+  top: var(--tg-top-safe-area);
   padding: 10px 24px;
   display: flex;
   align-items: center;
@@ -1420,7 +1421,7 @@
 
   .top-bar {
     left: 0;
-    top: 0;
+    top: var(--tg-top-safe-area);
     padding: 8px 10px;
   }
 
@@ -5570,6 +5571,13 @@ html, body {
     <span class="bottom-nav-label">Профиль</span>
   </button>
 
+   <button class="bottom-nav-btn" id="bottomBonusBtn">
+    <span class="bottom-nav-icon">
+      <img src="icons/gift.png" alt="">
+    </span>
+    <span class="bottom-nav-label">Бонусы</span>
+  </button>
+
   <button class="bottom-nav-btn" id="bottomWalletBtn">
     <span class="bottom-nav-icon">
       <img src="icons/wallet.png" alt="">
@@ -5601,6 +5609,25 @@ html, body {
     return fromTelegram || fromUrl || null;
   }
 
+  // Инициализация Telegram WebApp + safe area
+const tg = window.Telegram && window.Telegram.WebApp;
+
+function applySafeArea() {
+  if (!tg || !tg.safeAreaInset) return;
+
+  const top = tg.safeAreaInset.top || 0;
+  document.documentElement.style.setProperty('--tg-top-safe-area', top + 'px');
+}
+
+if (tg) {
+  tg.ready();
+  applySafeArea();
+
+  // если safe area меняется (поворот, фуллскрин и т.п.)
+  tg.onEvent('safeAreaChanged', applySafeArea);
+  tg.onEvent('fullscreenChanged', applySafeArea);
+}
+
   const twofaStatusText = document.getElementById('twofaStatusText');
 const twofaStartBtn   = document.getElementById('twofaStartBtn');
 const twofaSetupBlock = document.getElementById('twofaSetupBlock');
@@ -5608,6 +5635,8 @@ const twofaSecretBox  = document.getElementById('twofaSecretBox');
 const twofaCodeInput  = document.getElementById('twofaCodeInput');
 const twofaConfirmBtn = document.getElementById('twofaConfirmBtn');
 const twofaMessage    = document.getElementById('twofaMessage');
+
+let twofaEnabled = false; // флаг – включена ли 2FA
 
 async function loadTwofaStatus() {
   const tgId = getTgId();
@@ -5621,20 +5650,50 @@ async function loadTwofaStatus() {
     });
 
     if (!resp.ok) {
+      twofaEnabled = false;
       twofaStatusText.textContent = "выключена";
       return;
     }
 
     const data = await resp.json();
-    twofaStatusText.textContent = data.enabled ? "включена" : "выключена";
+    twofaEnabled = !!data.enabled;
+
+    if (twofaEnabled) {
+      twofaStatusText.textContent = "включена";
+
+      // уже всё настроено – блок подключения можно спрятать
+      if (twofaSetupBlock) {
+        twofaSetupBlock.style.display = 'none';
+      }
+      if (twofaMessage) {
+        twofaMessage.textContent = "Двухфакторная защита уже подключена.";
+        twofaMessage.style.color = "#35d659";
+      }
+    } else {
+      twofaStatusText.textContent = "выключена";
+      if (twofaMessage) {
+        twofaMessage.textContent = "2FA пока не подключена.";
+        twofaMessage.style.color = "#ccc";
+      }
+    }
   } catch (e) {
     console.error("Ошибка загрузки статуса 2FA:", e);
+    twofaEnabled = false;
     twofaStatusText.textContent = "ошибка";
   }
 }
 
+
 if (twofaStartBtn) {
   twofaStartBtn.addEventListener('click', async () => {
+    if (twofaEnabled) {
+      if (twofaMessage) {
+        twofaMessage.textContent = "2FA уже подключена, повторная инициализация не нужна.";
+        twofaMessage.style.color = "#35d659";
+      }
+      return;
+    }
+
     const tgId = getTgId();
     if (!tgId) {
       alert("Не найден tg_id");
@@ -5719,6 +5778,8 @@ if (twofaConfirmBtn) {
         twofaMessage.textContent = "2FA успешно подключена!";
         twofaMessage.style.color = "#35d659";
       }
+
+      twofaEnabled = true; // <-- добавь
 
       if (twofaStatusText) {
         twofaStatusText.textContent = "включена";
@@ -5959,8 +6020,10 @@ const profileIdValue  = document.getElementById('profileIdValue');
     const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
     // нижнее меню
 const bottomProfileBtn = document.getElementById('bottomProfileBtn');
+const bottomBonusBtn   = document.getElementById('bottomBonusBtn');
 const bottomWalletBtn  = document.getElementById('bottomWalletBtn');
 const bottomMenuBtn    = document.getElementById('bottomMenuBtn');
+
 
     const walletBtn = document.getElementById('walletBtn');
     const balanceOverlay = document.getElementById('balanceOverlay');
