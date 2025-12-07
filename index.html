@@ -17,7 +17,7 @@
 
       --font: 'Inter', sans-serif;
       --menu-font-size: 16px;
-      --tg-top-safe-area: 20px;
+      --tg-top-safe-area: 0px;
     }
 
     * {
@@ -26,16 +26,18 @@
       box-sizing: border-box;
     }
 
-    body {
-      background: #000;
-      font-family: var(--font);
-      color: var(--text-main);
-    }
+   body {
+  background: #000;
+  font-family: var(--font);
+  color: var(--text-main);
+
+  padding-top: var(--tg-header-height);
+}
 
     /* ----------- САЙДБАР ----------- */
     .sidebar {
       position: fixed;
-      top: 0;
+      top: var(--tg-header-height);
       left: 0;
       bottom: 0;
       width: 260px;
@@ -274,7 +276,7 @@
   position: fixed;
   left: 260px;
   right: 0;
-  top: var(--tg-top-safe-area);
+  top: 0;
   padding: 10px 24px;
   display: flex;
   align-items: center;
@@ -1421,7 +1423,7 @@
 
   .top-bar {
     left: 0;
-    top: var(--tg-top-safe-area);
+    top: 0;
     padding: 8px 10px;
   }
 
@@ -5598,6 +5600,31 @@ html, body {
 
 
   <script>
+
+    
+
+  function applyTelegramHeaderOffset() {
+    if (!tg) return;
+
+    // общая высота перекрытия (шапка Telegram)
+    const headerHeight =
+      (window.innerHeight || 0) -
+      (tg.viewportStableHeight || window.innerHeight);
+
+    const safeHeader = Math.max(0, headerHeight);
+
+    document.documentElement.style.setProperty(
+      '--tg-header-height',
+      safeHeader + 'px'
+    );
+  }
+
+  if (tg) {
+    tg.ready();
+
+    applyTelegramHeaderOffset();
+    tg.onEvent('viewportChanged', applyTelegramHeaderOffset);
+  }
 
      function getTgId() {
     const tg = window.Telegram && window.Telegram.WebApp;
