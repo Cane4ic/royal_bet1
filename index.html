@@ -1175,6 +1175,12 @@
       font-size: 13px;
     }
 
+    .history-empty {
+  font-size: 13px;
+  color: var(--text-soft);
+  padding: 8px 0;
+}
+
     .history-item {
       background: #191b23;
       border-radius: 10px;
@@ -5268,172 +5274,97 @@ html, body {
           <div class="deposit-select" id="depositSelectStep">
             <div class="wallet-deposit-subtitle">Криптовалюта</div>
             <div class="crypto-grid" id="cryptoGrid">
-              <!-- Пример карт -->
-              <div class="crypto-card"
-                   data-network="Tron"
-                   data-min="15.00"
-                   data-symbol="USDTTRC20">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">USDT</div>
-                    <div class="crypto-sub">(TRC20)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-trc20.png" alt="USDT TRC20">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/tron.png" alt="TRON">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crypto-card"
-                   data-network="BEP20"
-                   data-min="15.00"
-                   data-symbol="USDTBEP20">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">USDT</div>
-                    <div class="crypto-sub">(BEP20)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-bep20.png" alt="USDT BEP20">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/bsc.png" alt="BSC">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crypto-card"
-                   data-network="TON"
-                   data-min="15.00"
-                   data-symbol="USDTTON">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">USDT</div>
-                    <div class="crypto-sub">(Toncoin)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-toncoin.png" alt="USDT TONCOIN">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/ton.png" alt="TON">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crypto-card"
-                   data-network="TON"
-                   data-min="7.50"
-                   data-symbol="TONCOIN">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">TON</div>
-                    <div class="crypto-sub">(Toncoin)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-toncoin.png" alt="TONCOIN">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/ton.png" alt="TON">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crypto-card"
-                   data-network="ETH"
-                   data-min="0.075"
-                   data-symbol="ETH">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">ETH</div>
-                    <div class="crypto-sub">(Ethereum)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-ethereum.png" alt="ETHEREUM">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/eth.png" alt="ETH">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="crypto-card"
-                   data-network="TRX"
-                   data-min="15.00"
-                   data-symbol="TRX">
-                <div class="crypto-card-main">
-                  <div class="crypto-text">
-                    <div class="crypto-name">TRX</div>
-                    <div class="crypto-sub">(Tron)</div>
-                  </div>
-                  <div class="crypto-icons">
-                    <div class="crypto-icon-wrap">
-                      <div class="crypto-coin">
-                        <img src="coins/usdt-tron.png" alt="TRON">
-                      </div>
-                      <div class="crypto-network">
-                        <img src="networks/trx.png" alt="TRX">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="crypto-bottom">
-                  <div class="crypto-bonus-pill">
-                    <img src="icons/gift.png" alt="">
-                    <span>+5%</span>
-                  </div>
-                </div>
-              </div>
+  <!-- USDT TRC20 -->
+  <div class="crypto-card"
+       data-network="Tron"
+       data-min="15.00"
+       data-symbol="USDTTRC20">
+    <div class="crypto-card-main">
+      <div class="crypto-text">
+        <div class="crypto-name">USDT</div>
+        <div class="crypto-sub">(TRC20)</div>
+      </div>
+      <div class="crypto-icons">
+        <div class="crypto-icon-wrap">
+          <div class="crypto-coin">
+            <img src="coins/usdt-trc20.png" alt="USDT TRC20">
+          </div>
+          <div class="crypto-network">
+            <img src="networks/tron.png" alt="TRON">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="crypto-bottom">
+      <div class="crypto-bonus-pill">
+        <img src="icons/gift.png" alt="">
+        <span>+50%</span>
+      </div>
+      <div class="crypto-min">от 15 USDT</div>
+    </div>
+  </div>
 
-              <!-- добавь остальные монеты по этому же шаблону -->
-            </div>
+  <!-- TON -->
+  <div class="crypto-card"
+       data-network="TON"
+       data-min="15.00"
+       data-symbol="TONCOIN">
+    <div class="crypto-card-main">
+      <div class="crypto-text">
+        <div class="crypto-name">TON</div>
+        <div class="crypto-sub">(Toncoin)</div>
+      </div>
+      <div class="crypto-icons">
+        <div class="crypto-icon-wrap">
+          <div class="crypto-coin">
+            <img src="coins/usdt-toncoin.png" alt="TONCOIN">
+          </div>
+          <div class="crypto-network">
+            <img src="networks/ton.png" alt="TON">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="crypto-bottom">
+      <div class="crypto-bonus-pill">
+        <img src="icons/gift.png" alt="">
+        <span>+50%</span>
+      </div>
+      <div class="crypto-min">от 15 TON</div>
+    </div>
+  </div>
+
+  <!-- Binance Pay -->
+  <div class="crypto-card"
+       data-network="Binance Pay"
+       data-min="15.00"
+       data-symbol="BINANCEPAY">
+    <div class="crypto-card-main">
+      <div class="crypto-text">
+        <div class="crypto-name">Binance Pay</div>
+        <div class="crypto-sub">USDT</div>
+      </div>
+      <div class="crypto-icons">
+        <div class="crypto-icon-wrap">
+          <div class="crypto-coin">
+            <img src="coins/binancepay.png" alt="Binance Pay">
+          </div>
+          <div class="crypto-network">
+            <img src="networks/binance.png" alt="Binance">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="crypto-bottom">
+      <div class="crypto-bonus-pill">
+        <img src="icons/gift.png" alt="">
+        <span>+50%</span>
+      </div>
+      <div class="crypto-min">от 15 USDT</div>
+    </div>
+  </div>
+</div>
+
           </div>
 
           <div class="deposit-payment" id="depositPaymentStep">
@@ -5630,20 +5561,14 @@ html, body {
 
         <!-- ИСТОРИЯ -->
         <div class="wallet-tab-panel" data-panel="history">
-          <div class="wallet-deposit-subtitle">История операций</div>
-          <div class="history-list">
-            <div class="history-item">
-              <div class="h-left">
-                <div class="h-type">Депозит USDTTRC20</div>
-                <div class="h-meta">10.00 • Tron • 10.12.2025, 16:45</div>
-              </div>
-              <div>
-                <div class="h-amount">+10.00</div>
-                <div class="h-status">Зачислено</div>
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="wallet-deposit-subtitle">История операций</div>
+
+  <div class="history-empty" id="historyEmpty" style="display:none;">
+    История депозитов пуста.
+  </div>
+
+  <div class="history-list" id="historyList"></div>
+</div>
 
       </div>
     </div>
@@ -6325,6 +6250,8 @@ if (infoToggleBtn && infoSubmenu) {
 
     const walletTabs = document.querySelectorAll('.wallet-tab');
     const walletPanels = document.querySelectorAll('.wallet-tab-panel');
+    const historyList  = document.getElementById('historyList');
+const historyEmpty = document.getElementById('historyEmpty');
 
     const depositSelectStep = document.getElementById('depositSelectStep');
     const depositPaymentStep = document.getElementById('depositPaymentStep');
@@ -6535,18 +6462,22 @@ if (bottomMenuBtn) {
     });
 
     function setActiveTab(tabName) {
-      walletTabs.forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.tab === tabName);
-      });
-      walletPanels.forEach(panel => {
-        panel.classList.toggle('active', panel.dataset.panel === tabName);
-      });
+  walletTabs.forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.tab === tabName);
+  });
+  walletPanels.forEach(panel => {
+    panel.classList.toggle('active', panel.dataset.panel === tabName);
+  });
 
-      if (tabName !== 'deposit') {
-        walletBackBtn.classList.add('hidden');
-        walletModalTitle.textContent = tabName === 'withdraw' ? 'Вывод' : 'История';
-      }
-    }
+  if (tabName !== 'deposit') {
+    walletBackBtn.classList.add('hidden');
+    walletModalTitle.textContent = tabName === 'withdraw' ? 'Вывод' : 'История';
+  }
+
+  if (tabName === 'history') {
+    loadDepositHistory();
+  }
+}
 
     walletTabs.forEach(tab => {
       tab.addEventListener('click', () => {
@@ -7811,6 +7742,88 @@ async function loadBalance() {
     console.error("Ошибка запроса баланса:", err);
   }
 }
+
+async function loadDepositHistory() {
+  const tgId = getTgId();
+  if (!tgId || !historyList || !historyEmpty) return;
+
+  // очищаем и скрываем пустой текст
+  historyList.innerHTML = '';
+  historyEmpty.style.display = 'none';
+
+  try {
+    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/deposit-history", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tg_id: Number(tgId) })
+    });
+
+    if (!resp.ok) {
+      console.warn("Ошибка ответа API /api/deposit-history:", resp.status);
+      historyEmpty.textContent = "Не удалось загрузить историю депозитов.";
+      historyEmpty.style.display = "block";
+      return;
+    }
+
+    const data = await resp.json();
+    const items = Array.isArray(data.history) ? data.history : [];
+
+    if (!items.length) {
+      historyEmpty.textContent = "История депозитов пуста.";
+      historyEmpty.style.display = "block";
+      return;
+    }
+
+    items.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'history-item';
+
+      const left = document.createElement('div');
+      left.className = 'h-left';
+
+      const type = document.createElement('div');
+      type.className = 'h-type';
+      // ожидаем поля currency/symbol, подстрой под свой бэк
+      const cur = item.currency || item.symbol || 'USDT';
+      type.textContent = `Депозит ${cur}`;
+
+      const meta = document.createElement('div');
+      meta.className = 'h-meta';
+
+      const amountStr  = item.amount != null ? `${Number(item.amount).toFixed(2)} ${cur}` : '';
+      const networkStr = item.network || '';
+      const dateStr    = item.created_at || item.date || '';
+
+      meta.textContent = [amountStr, networkStr, dateStr].filter(Boolean).join(' • ');
+
+      left.appendChild(type);
+      left.appendChild(meta);
+
+      const right = document.createElement('div');
+
+      const amount = document.createElement('div');
+      amount.className = 'h-amount';
+      amount.textContent = `+${Number(item.amount || 0).toFixed(2)}`;
+
+      const status = document.createElement('div');
+      status.className = 'h-status';
+      status.textContent = item.status || 'Зачислено';
+
+      right.appendChild(amount);
+      right.appendChild(status);
+
+      row.appendChild(left);
+      row.appendChild(right);
+
+      historyList.appendChild(row);
+    });
+  } catch (e) {
+    console.error("Ошибка загрузки истории депозитов:", e);
+    historyEmpty.textContent = "Ошибка загрузки истории депозитов.";
+    historyEmpty.style.display = "block";
+  }
+}
+
 
 // 3. отправка изменения баланса на сервер (игры: ставка / выигрыш)
 async function sendBalanceDelta(delta) {
