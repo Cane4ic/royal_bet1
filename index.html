@@ -9,14 +9,15 @@
 
   <style>
     :root {
-  --accent-start: #ffd84a;
-  --accent-end: #ff9a2b;
-  --text-main: #e7e9ef;
-  --text-soft: #9aa0ac;
-  --font: 'Inter', sans-serif;
-  --menu-font-size: 16px;
-  
-}
+      --accent-start: #ffd84a;
+      --accent-end: #ff9a2b;
+
+      --text-main: #e7e9ef;
+      --text-soft: #9aa0ac;
+
+      --font: 'Inter', sans-serif;
+      --menu-font-size: 16px;
+    }
 
     * {
       margin: 0;
@@ -24,19 +25,16 @@
       box-sizing: border-box;
     }
 
-   body {
-  background: #000;
-  font-family: var(--font);
-  color: var(--text-main);
-
-  padding-top: var(--tg-top-safe-area);
-}
+    body {
+      background: #000;
+      font-family: var(--font);
+      color: var(--text-main);
+    }
 
     /* ----------- САЙДБАР ----------- */
     .sidebar {
       position: fixed;
-      top: var(--tg-top-safe-area);  /* вместо var(--tg-header-height) */
-
+      top: 0;
       left: 0;
       bottom: 0;
       width: 260px;
@@ -306,7 +304,12 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 
-  background: linear-gradient(180deg, #ffd84a, #ff9a2b);
+  background: linear-gradient(
+    180deg,
+    #fff1b8 0%,
+    #f5c45d 40%,
+    #d9a441 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1384,7 +1387,7 @@
   .sidebar {
     left: 0;
     right: 0;
-    top: var(--tg-top-safe-area);  /* вместо var(--tg-header-height) */
+    top: auto;
     bottom: 0;
     width: 100%;
     height: 190vh;
@@ -4176,23 +4179,237 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-.bonus-page-card {
-  background: #191b23;
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 10px;
+.bonuses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.bonus-page-card-title {
-  font-size: 15px;
+.bonuses-note {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-soft, #a0a4b5);
+}
+
+.site-footer {
+  background: transparent;   /* такой же фон, как у всей страницы */
+
+  border-top: 1px solid #0f1116;
+  margin-top: 40px;
+  padding: 24px 16px 90px; /* 90px — чтобы контент не уехал под нижнее меню */
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 40px;
+  justify-content: flex-start;
+  margin-bottom: 24px;
+}
+
+.footer-col {
+  min-width: 140px;
+}
+
+.footer-brand {
+  flex: 1;
+}
+
+.footer-logo-text {
+  font-family: "Times New Roman", serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  background: linear-gradient(
+    180deg,
+    #fff1b8 0%,
+    #f5c45d 40%,
+    #d9a441 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-title {
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  color: #ffffff;
 }
 
-.bonus-page-card-sub {
-  font-size: 13px;
-  color: var(--text-soft);
+.footer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
+
+.footer-links a {
+  font-size: 13px;
+  color: var(--text-soft, #9aa0ac);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--text-main, #e7e9ef);
+}
+
+/* баннер поддержки */
+
+.footer-support-banner {
+  background: #111318;
+  border-radius: 18px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #0f1116;
+}
+
+.footer-support-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.footer-support-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #ffc400;
+  color: #111318;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+.footer-support-subtitle {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-soft, #9aa0ac);
+}
+
+.footer-support-btn {
+  margin-top: 12px;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #2f313c;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.footer-support-btn:hover {
+  background: #3a3c47;
+}
+
+.footer-support-image {
+  flex: 0 0 150px;
+  height: 120px;
+  border-radius: 16px;
+  background: #1a1c24;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* временный плейсхолдер под баннер */
+}
+
+@media (max-width: 768px) {
+  .footer-top {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .footer-support-banner {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .footer-support-image {
+    flex: 0 0 110px;
+    height: 110px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-support-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-support-image {
+    width: 100%;
+    flex: 0 0 auto;
+    height: 160px;
+  }
+}
+
+/* контейнер пункта */
+.menu-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* кнопка "Информация" */
+.menu-link-info {
+  justify-content: space-between;
+}
+
+/* стрелка */
+.menu-arrow {
+  margin-left: auto;
+  font-size: 14px;
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+}
+
+/* поворот стрелки */
+.menu-link-info.open .menu-arrow {
+  transform: rotate(90deg);
+}
+
+/* подменю */
+.submenu {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 42px; /* аккуратный отступ */
+  margin-top: 6px;
+}
+
+.submenu.open {
+  display: flex;
+}
+
+.submenu-link {
+  background: none;
+  border: none;
+  padding: 6px 0;
+  font-size: 13px;
+  text-align: left;
+  color: #9aa0ac;
+  cursor: pointer;
+}
+
+.submenu-link:hover {
+  color: #ffffff;
+}
+
 
   </style>
 </head>
@@ -4233,6 +4450,28 @@ html, body {
             Бонусы
           </button>
         </li>
+        <li class="menu-item menu-item-info">
+  <button class="menu-link menu-link-info" id="infoToggleBtn">
+    <span class="menu-icon">
+      <img src="icons/info.png" alt="">
+    </span>
+    Информация
+    <span class="menu-arrow">›</span>
+  </button>
+
+  <ul class="submenu" id="infoSubmenu">
+    <li>
+      <button class="submenu-link" data-nav="rules">
+        Правила
+      </button>
+    </li>
+    <li>
+      <button class="submenu-link" data-nav="partner">
+        Партнёрская программа
+      </button>
+    </li>
+  </ul>
+</li>
       </ul>
     </div>
 
@@ -4586,33 +4825,37 @@ html, body {
     </section>
   </main>
 
-  <main class="page-content" id="bonusesPage" style="display:none">
-  <div class="profile-section">
-    <div class="profile-section-header">
-      <button class="profile-back-btn" id="bonusesBackBtn">
-        ←
-      </button>
-      <h2 class="profile-section-title">Бонусы</h2>
-    </div>
+  <main class="page-content" id="bonusesPage" style="display:none;">
+  <button class="profile-back-btn" id="bonusesBackBtn">← На главную</button>
 
-    <div class="profile-section-body">
-      <div class="bonus-page-card">
-        <div class="bonus-page-card-title">Приветственный бонус</div>
-        <div class="bonus-page-card-sub">
-          400% + 200 фриспинов на первые депозиты
+  <section class="profile-header">
+    <h1 class="profile-title">Бонусы</h1>
+    <p class="profile-subtitle"></p>
+  </section>
+
+  <section class="profile-form-card">
+    <div class="profile-form-title">Ваши бонусы</div>
+
+    <div class="bonuses-list">
+      <div class="bonus-card">
+        <div class="bonus-row-top">
+          <span>Welcome бонус 100%</span>
+          <span class="bonus-arrow">›</span>
         </div>
+        <div class="bonus-amount">До 5 000 ₴</div>
+        <p class="bonuses-note">Пример карточки. Потом сюда можно подставить реальные данные из API.</p>
       </div>
 
-      <div class="bonus-page-card">
-        <div class="bonus-page-card-title">Кэшбэк</div>
-        <div class="bonus-page-card-sub">
-          Еженедельный возврат части проигранных средств.
+      <div class="bonus-card">
+        <div class="bonus-row-top">
+          <span>Кэшбэк за проигрыш</span>
+          <span class="bonus-arrow">›</span>
         </div>
+        <div class="bonus-amount">10% каждую неделю</div>
+        <p class="bonuses-note">Условия акции можно вывести в отдельной модалке или на другой странице.</p>
       </div>
-
-      <!-- сюда потом можно добавить реальные данные с backend -->
     </div>
-  </div>
+  </section>
 </main>
 
   <!-- СТРАНИЦА ИГРЫ CRASH ROYAL -->
@@ -5025,93 +5268,173 @@ html, body {
           <div class="deposit-select" id="depositSelectStep">
             <div class="wallet-deposit-subtitle">Криптовалюта</div>
             <div class="crypto-grid" id="cryptoGrid">
-  <!-- USDT TRC20 -->
-  <div class="crypto-card"
-       data-network="TRC20"
-       data-min="10.00"
-       data-symbol="USDT">
-    <div class="crypto-card-main">
-      <div class="crypto-text">
-        <div class="crypto-name">USDT</div>
-        <div class="crypto-sub">Сеть TRC20</div>
-      </div>
-      <div class="crypto-icons">
-        <div class="crypto-icon-wrap">
-          <div class="crypto-coin">
-            <img src="coins/usdt-trc20.png" alt="">
-          </div>
-          <div class="crypto-network">
-            <img src="networks/tron.png" alt="">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="crypto-bottom">
-      <div class="crypto-bonus-pill">
-        <img src="icons/bonus.svg" alt="">
-        <span>+400% и 200 FS</span>
-      </div>
-    </div>
-  </div>
+              <!-- Пример карт -->
+              <div class="crypto-card"
+                   data-network="Tron"
+                   data-min="15.00"
+                   data-symbol="USDTTRC20">
+                <div class="crypto-card-main">
+                  <div class="crypto-text">
+                    <div class="crypto-name">USDT</div>
+                    <div class="crypto-sub">(TRC20)</div>
+                  </div>
+                  <div class="crypto-icons">
+                    <div class="crypto-icon-wrap">
+                      <div class="crypto-coin">
+                        <img src="coins/usdt-trc20.png" alt="USDT TRC20">
+                      </div>
+                      <div class="crypto-network">
+                        <img src="networks/tron.png" alt="TRON">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="crypto-bottom">
+                  <div class="crypto-bonus-pill">
+                    <img src="icons/gift.png" alt="">
+                    <span>+5%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="crypto-card"
+                   data-network="BEP20"
+                   data-min="15.00"
+                   data-symbol="USDTBEP20">
+                <div class="crypto-card-main">
+                  <div class="crypto-text">
+                    <div class="crypto-name">USDT</div>
+                    <div class="crypto-sub">(BEP20)</div>
+                  </div>
+                  <div class="crypto-icons">
+                    <div class="crypto-icon-wrap">
+                      <div class="crypto-coin">
+                        <img src="coins/usdt-bep20.png" alt="USDT BEP20">
+                      </div>
+                      <div class="crypto-network">
+                        <img src="networks/bsc.png" alt="BSC">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="crypto-bottom">
+                  <div class="crypto-bonus-pill">
+                    <img src="icons/gift.png" alt="">
+                    <span>+5%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="crypto-card"
+                   data-network="TON"
+                   data-min="15.00"
+                   data-symbol="USDTTON">
+                <div class="crypto-card-main">
+                  <div class="crypto-text">
+                    <div class="crypto-name">USDT</div>
+                    <div class="crypto-sub">(Toncoin)</div>
+                  </div>
+                  <div class="crypto-icons">
+                    <div class="crypto-icon-wrap">
+                      <div class="crypto-coin">
+                        <img src="coins/usdt-toncoin.png" alt="USDT TONCOIN">
+                      </div>
+                      <div class="crypto-network">
+                        <img src="networks/ton.png" alt="TON">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="crypto-bottom">
+                  <div class="crypto-bonus-pill">
+                    <img src="icons/gift.png" alt="">
+                    <span>+5%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="crypto-card"
+                   data-network="TON"
+                   data-min="7.50"
+                   data-symbol="TONCOIN">
+                <div class="crypto-card-main">
+                  <div class="crypto-text">
+                    <div class="crypto-name">TON</div>
+                    <div class="crypto-sub">(Toncoin)</div>
+                  </div>
+                  <div class="crypto-icons">
+                    <div class="crypto-icon-wrap">
+                      <div class="crypto-coin">
+                        <img src="coins/usdt-toncoin.png" alt="TONCOIN">
+                      </div>
+                      <div class="crypto-network">
+                        <img src="networks/ton.png" alt="TON">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="crypto-bottom">
+                  <div class="crypto-bonus-pill">
+                    <img src="icons/gift.png" alt="">
+                    <span>+5%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="crypto-card"
+                   data-network="ETH"
+                   data-min="0.075"
+                   data-symbol="ETH">
+                <div class="crypto-card-main">
+                  <div class="crypto-text">
+                    <div class="crypto-name">ETH</div>
+                    <div class="crypto-sub">(Ethereum)</div>
+                  </div>
+                  <div class="crypto-icons">
+                    <div class="crypto-icon-wrap">
+                      <div class="crypto-coin">
+                        <img src="coins/usdt-ethereum.png" alt="ETHEREUM">
+                      </div>
+                      <div class="crypto-network">
+                        <img src="networks/eth.png" alt="ETH">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="crypto-bottom">
+                  <div class="crypto-bonus-pill">
+                    <img src="icons/gift.png" alt="">
+                    <span>+5%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="crypto-card"
+                   data-network="TRX"
+                   data-min="15.00"
+                   data-symbol="TRX">
+                <div class="crypto-card-main">
+                  <div class="crypto-text">
+                    <div class="crypto-name">TRX</div>
+                    <div class="crypto-sub">(Tron)</div>
+                  </div>
+                  <div class="crypto-icons">
+                    <div class="crypto-icon-wrap">
+                      <div class="crypto-coin">
+                        <img src="coins/usdt-tron.png" alt="TRON">
+                      </div>
+                      <div class="crypto-network">
+                        <img src="networks/trx.png" alt="TRX">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="crypto-bottom">
+                  <div class="crypto-bonus-pill">
+                    <img src="icons/gift.png" alt="">
+                    <span>+5%</span>
+                  </div>
+                </div>
+              </div>
 
-  <!-- TON -->
-  <div class="crypto-card"
-       data-network="TON"
-       data-min="5.00"
-       data-symbol="TON">
-    <div class="crypto-card-main">
-      <div class="crypto-text">
-        <div class="crypto-name">TON</div>
-        <div class="crypto-sub">Toncoin сеть</div>
-      </div>
-      <div class="crypto-icons">
-        <div class="crypto-icon-wrap">
-          <div class="crypto-coin">
-            <img src="coins/ton.png" alt="">
+              <!-- добавь остальные монеты по этому же шаблону -->
+            </div>
           </div>
-          <div class="crypto-network">
-            <img src="networks/ton.png" alt="">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="crypto-bottom">
-      <div class="crypto-bonus-pill">
-        <img src="icons/bonus.svg" alt="">
-        <span>+400% и 200 FS</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Binance Pay -->
-  <div class="crypto-card"
-       data-network="Binance Pay"
-       data-min="15.00"
-       data-symbol="USDT">
-    <div class="crypto-card-main">
-      <div class="crypto-text">
-        <div class="crypto-name">Binance Pay</div>
-        <div class="crypto-sub">USDT через Binance</div>
-      </div>
-      <div class="crypto-icons">
-        <div class="crypto-icon-wrap">
-          <div class="crypto-coin">
-            <img src="coins/binance-pay.png" alt="">
-          </div>
-          <div class="crypto-network">
-            <img src="networks/binance.png" alt="">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="crypto-bottom">
-      <div class="crypto-bonus-pill">
-        <img src="icons/bonus.svg" alt="">
-        <span>+400% и 200 FS</span>
-      </div>
-    </div>
-  </div>
-</div>
 
           <div class="deposit-payment" id="depositPaymentStep">
             <div class="pay-row">
@@ -5309,7 +5632,16 @@ html, body {
         <div class="wallet-tab-panel" data-panel="history">
           <div class="wallet-deposit-subtitle">История операций</div>
           <div class="history-list">
-            
+            <div class="history-item">
+              <div class="h-left">
+                <div class="h-type">Депозит USDTTRC20</div>
+                <div class="h-meta">10.00 • Tron • 10.12.2025, 16:45</div>
+              </div>
+              <div>
+                <div class="h-amount">+10.00</div>
+                <div class="h-status">Зачислено</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -5522,6 +5854,8 @@ html, body {
   </div>
 </div>
 
+
+
 <nav class="mobile-bottom-nav">
   <button class="bottom-nav-btn" id="bottomProfileBtn">
     <span class="bottom-nav-icon">
@@ -5530,9 +5864,10 @@ html, body {
     <span class="bottom-nav-label">Профиль</span>
   </button>
 
-   <button class="bottom-nav-btn" id="bottomBonusBtn">
+  <!-- НОВАЯ кнопка "Бонусы" (ЛЕВЕЕ КОШЕЛЬКА) -->
+  <button class="bottom-nav-btn" id="bottomBonusesBtn">
     <span class="bottom-nav-icon">
-      <img src="icons/gift.png" alt="">
+      <img src="icons/bonus.png" alt="">
     </span>
     <span class="bottom-nav-label">Бонусы</span>
   </button>
@@ -5555,9 +5890,8 @@ html, body {
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-<script>
-  
 
+  <script>
 
      function getTgId() {
     const tg = window.Telegram && window.Telegram.WebApp;
@@ -5569,40 +5903,6 @@ html, body {
     return fromTelegram || fromUrl || null;
   }
 
-  // Инициализация Telegram WebApp + safe area
-// Инициализация Telegram WebApp + safe area / header offset
-// const tg = window.Telegram && window.Telegram.WebApp;
-
-function applySafeArea() {
-  if (!tg) return;
-
-  const insetTop    = (tg.safeAreaInset && tg.safeAreaInset.top)    || 0;
-  const insetBottom = (tg.safeAreaInset && tg.safeAreaInset.bottom) || 0;
-
-  let headerHeight = 0;
-
-  // viewportStableHeight = высота области, где точно нет системных панелей
-  if (tg.viewportStableHeight && window.innerHeight) {
-    const totalOverlay = window.innerHeight - tg.viewportStableHeight;
-    // сверху шапка Телеги + сверху/снизу safeArea. Нижнюю часть вычитаем.
-    headerHeight = Math.max(0, totalOverlay - insetBottom);
-  }
-
-  const topOffset = insetTop + headerHeight;
-
-  document.documentElement.style
-    .setProperty('--tg-top-safe-area', topOffset + 'px');
-}
-
-if (tg) {
-  tg.ready();
-  
-
-  // реагируем на изменение вёрстки WebApp (раскрытие, сворачивание и т.п.)
-  tg.onEvent('viewportChanged', applySafeArea);
-}
-
-
   const twofaStatusText = document.getElementById('twofaStatusText');
 const twofaStartBtn   = document.getElementById('twofaStartBtn');
 const twofaSetupBlock = document.getElementById('twofaSetupBlock');
@@ -5610,8 +5910,6 @@ const twofaSecretBox  = document.getElementById('twofaSecretBox');
 const twofaCodeInput  = document.getElementById('twofaCodeInput');
 const twofaConfirmBtn = document.getElementById('twofaConfirmBtn');
 const twofaMessage    = document.getElementById('twofaMessage');
-
-let twofaEnabled = false; // флаг – включена ли 2FA
 
 async function loadTwofaStatus() {
   const tgId = getTgId();
@@ -5625,50 +5923,50 @@ async function loadTwofaStatus() {
     });
 
     if (!resp.ok) {
-      twofaEnabled = false;
       twofaStatusText.textContent = "выключена";
+      // при ошибке пусть остаётся возможность подключить заново
+      if (twofaStartBtn) {
+        twofaStartBtn.disabled = false;
+        twofaStartBtn.textContent = "Подключить Google Authenticator";
+      }
+      if (twofaSetupBlock) {
+        twofaSetupBlock.style.display = 'none';
+      }
       return;
     }
 
     const data = await resp.json();
-    twofaEnabled = !!data.enabled;
+    const enabled = !!data.enabled;
 
-    if (twofaEnabled) {
-      twofaStatusText.textContent = "включена";
+    twofaStatusText.textContent = enabled ? "включена" : "выключена";
 
-      // уже всё настроено – блок подключения можно спрятать
+    if (enabled) {
+      // если уже включено — скрываем форму и блокируем кнопку
       if (twofaSetupBlock) {
         twofaSetupBlock.style.display = 'none';
       }
-      if (twofaMessage) {
-        twofaMessage.textContent = "Двухфакторная защита уже подключена.";
-        twofaMessage.style.color = "#35d659";
+      if (twofaStartBtn) {
+        twofaStartBtn.textContent = "2FA подключена";
+        twofaStartBtn.disabled = true;
       }
     } else {
-      twofaStatusText.textContent = "выключена";
-      if (twofaMessage) {
-        twofaMessage.textContent = "2FA пока не подключена.";
-        twofaMessage.style.color = "#ccc";
+      // если выключено — даём возможность подключить
+      if (twofaStartBtn) {
+        twofaStartBtn.textContent = "Подключить Google Authenticator";
+        twofaStartBtn.disabled = false;
+      }
+      if (twofaSetupBlock) {
+        twofaSetupBlock.style.display = 'none';
       }
     }
   } catch (e) {
     console.error("Ошибка загрузки статуса 2FA:", e);
-    twofaEnabled = false;
     twofaStatusText.textContent = "ошибка";
   }
 }
 
-
 if (twofaStartBtn) {
   twofaStartBtn.addEventListener('click', async () => {
-    if (twofaEnabled) {
-      if (twofaMessage) {
-        twofaMessage.textContent = "2FA уже подключена, повторная инициализация не нужна.";
-        twofaMessage.style.color = "#35d659";
-      }
-      return;
-    }
-
     const tgId = getTgId();
     if (!tgId) {
       alert("Не найден tg_id");
@@ -5753,8 +6051,6 @@ if (twofaConfirmBtn) {
         twofaMessage.textContent = "2FA успешно подключена!";
         twofaMessage.style.color = "#35d659";
       }
-
-      twofaEnabled = true; // <-- добавь
 
       if (twofaStatusText) {
         twofaStatusText.textContent = "включена";
@@ -5995,53 +6291,19 @@ const profileIdValue  = document.getElementById('profileIdValue');
     const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
     // нижнее меню
 const bottomProfileBtn = document.getElementById('bottomProfileBtn');
-const bottomBonusBtn   = document.getElementById('bottomBonusBtn');
+const bottomBonusesBtn = document.getElementById('bottomBonusesBtn');
 const bottomWalletBtn  = document.getElementById('bottomWalletBtn');
 const bottomMenuBtn    = document.getElementById('bottomMenuBtn');
 
-function closeSidebar() {
-  if (!sidebar) return;
-  sidebar.classList.remove('open');
-  sidebarBackdrop?.classList.remove('open');
-}
+const infoToggleBtn = document.getElementById('infoToggleBtn');
+const infoSubmenu  = document.getElementById('infoSubmenu');
 
-if (bottomProfileBtn) {
-  bottomProfileBtn.addEventListener('click', () => {
-    showOnlyPage(profilePage);
-    closeSidebar();
+if (infoToggleBtn && infoSubmenu) {
+  infoToggleBtn.addEventListener('click', () => {
+    const isOpen = infoSubmenu.classList.toggle('open');
+    infoToggleBtn.classList.toggle('open', isOpen);
   });
 }
-
-if (bottomBonusBtn) {
-  bottomBonusBtn.addEventListener('click', () => {
-    showOnlyPage(bonusesPage);
-    closeSidebar();
-  });
-}
-
-const bonusesBackBtn = document.getElementById('bonusesBackBtn');
-if (bonusesBackBtn) {
-  bonusesBackBtn.addEventListener('click', () => {
-    showOnlyPage(mainPage);
-  });
-}
-
-const sidebarNavLinks = document.querySelectorAll('.menu-link[data-nav]');
-
-sidebarNavLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    const nav = link.dataset.nav;
-    if (nav === 'profile') {
-      showOnlyPage(profilePage);
-    } else if (nav === 'bonuses') {
-      showOnlyPage(bonusesPage);
-    } else {
-      // по умолчанию — главная
-      showOnlyPage(mainPage);
-    }
-    closeSidebar();
-  });
-});
 
 
     const walletBtn = document.getElementById('walletBtn');
@@ -6273,22 +6535,18 @@ if (bottomMenuBtn) {
     });
 
     function setActiveTab(tabName) {
-  walletTabs.forEach(tab => {
-    tab.classList.toggle('active', tab.dataset.tab === tabName);
-  });
-  walletPanels.forEach(panel => {
-    panel.classList.toggle('active', panel.dataset.panel === tabName);
-  });
+      walletTabs.forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+      });
+      walletPanels.forEach(panel => {
+        panel.classList.toggle('active', panel.dataset.panel === tabName);
+      });
 
-  if (tabName !== 'deposit') {
-    walletBackBtn.classList.add('hidden');
-    walletModalTitle.textContent = tabName === 'withdraw' ? 'Вывод' : 'История';
-  }
-
-  if (tabName === 'history') {
-    loadWalletHistory();
-  }
-}
+      if (tabName !== 'deposit') {
+        walletBackBtn.classList.add('hidden');
+        walletModalTitle.textContent = tabName === 'withdraw' ? 'Вывод' : 'История';
+      }
+    }
 
     walletTabs.forEach(tab => {
       tab.addEventListener('click', () => {
@@ -6332,8 +6590,6 @@ if (bottomMenuBtn) {
     }
   });
 }
-
-
 
 
     walletBackBtn.addEventListener('click', openDepositSelectStep);
@@ -6400,114 +6656,6 @@ if (bottomMenuBtn) {
         withdrawDropdown.classList.remove('open');
       }
     });
-
-    const historyList = document.getElementById('historyList');
-
-async function loadWalletHistory() {
-  if (!historyList) return;
-
-  const tgId = getTgId();
-  if (!tgId) {
-    console.warn("Нет tg_id, не можем загрузить историю");
-    return;
-  }
-
-  historyList.innerHTML = `
-    <div class="history-item">
-      <div class="h-left">
-        <div class="h-type">Загрузка…</div>
-      </div>
-    </div>
-  `;
-
-  try {
-    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/deposit/history", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ tg_id: Number(tgId) })
-    });
-
-    if (!resp.ok) {
-      console.warn("Ошибка ответа /api/deposit/history:", resp.status);
-      historyList.innerHTML = `
-        <div class="history-item">
-          <div class="h-left">
-            <div class="h-type">Не удалось загрузить историю</div>
-            <div class="h-meta">Попробуйте позже или напишите в поддержку</div>
-          </div>
-        </div>
-      `;
-      return;
-    }
-
-    const items = await resp.json(); // ожидаем массив
-
-    if (!items.length) {
-      historyList.innerHTML = `
-        <div class="history-item">
-          <div class="h-left">
-            <div class="h-type">Пока нет депозитов</div>
-            <div class="h-meta">Как только пополните баланс, операции появятся здесь</div>
-          </div>
-        </div>
-      `;
-      return;
-    }
-
-    historyList.innerHTML = "";
-
-    items.forEach((tx) => {
-      const div = document.createElement("div");
-      div.className = "history-item";
-
-      const amount = Number(tx.amount || 0);
-      const currency = tx.currency || "USDT";
-      const network = tx.network || tx.method || "";
-      const createdAt = tx.created_at ? new Date(tx.created_at) : null;
-      const status = tx.status || "pending";
-
-      const dateStr = createdAt
-        ? createdAt.toLocaleString("ru-RU", {
-            day: "2-digit",
-            month: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit"
-          })
-        : "";
-
-      div.innerHTML = `
-        <div class="h-left">
-          <div class="h-type">Депозит ${currency}</div>
-          <div class="h-meta">
-            ${amount.toFixed(2)} ${currency}
-            ${network ? " • " + network : ""}
-            ${dateStr ? " • " + dateStr : ""}
-          </div>
-        </div>
-        <div class="h-right">
-          <div class="h-amount">+${amount.toFixed(2)}</div>
-          <div class="h-status">${status === "success" ? "Зачислен" :
-                                   status === "pending" ? "В ожидании" :
-                                   "Отклонён"}</div>
-        </div>
-      `;
-
-      historyList.appendChild(div);
-    });
-  } catch (err) {
-    console.error("Ошибка при загрузке истории:", err);
-    historyList.innerHTML = `
-      <div class="history-item">
-        <div class="h-left">
-          <div class="h-type">Ошибка сети</div>
-          <div class="h-meta">Проверьте интернет и попробуйте ещё раз</div>
-        </div>
-      </div>
-    `;
-  }
-}
 
     /* ===== ОДИН АДАПТИВНЫЙ ПРОМО-БАННЕР ===== */
 
@@ -6644,6 +6792,7 @@ function showOnlyPage(pageEl) {
   const pages = [
     mainPage,
     profilePage,
+    bonusesPage,
     crashRoyalPage,
     chickenRoadPage,
     slotRoyalPage,
@@ -6659,20 +6808,13 @@ function showOnlyPage(pageEl) {
   window.scrollTo(0, 0);
 }
 
-        // ===== ПЕРЕХОД В ЛИЧНЫЙ КАБИНЕТ =====
-    const mainPage = document.getElementById('mainPage');
-    const profilePage = document.getElementById('profilePage');
-    const profileAvatar = document.querySelector('.profile-avatar');
-    const profileBackBtn = document.getElementById('profileBackBtn');
-    const bonusesPage = document.getElementById('bonusesPage');
-
-    function showOnlyPage(page) {
-  const pages = [mainPage, profilePage, bonusesPage];
-  pages.forEach(p => {
-    if (!p) return;
-    p.style.display = (p === page) ? 'block' : 'none';
-  });
-}
+        // ===== ПЕРЕХОД В ЛИЧНЫЙ КАБИНЕТ И БОНУСЫ =====
+const mainPage      = document.getElementById('mainPage');
+const profilePage   = document.getElementById('profilePage');
+const bonusesPage   = document.getElementById('bonusesPage');   // НОВОЕ
+const profileAvatar = document.querySelector('.profile-avatar');
+const profileBackBtn   = document.getElementById('profileBackBtn');
+const bonusesBackBtn   = document.getElementById('bonusesBackBtn'); // НОВОЕ
 
     if (profileAvatar && mainPage && profilePage && profileBackBtn) {
   // Открыть профиль по клику на аватар
@@ -6680,8 +6822,17 @@ function showOnlyPage(pageEl) {
     showOnlyPage(profilePage);
   });
 
+
+
   // Назад на главную
   profileBackBtn.addEventListener('click', () => {
+    showOnlyPage(mainPage);
+  });
+}
+
+// Назад с БОНУСОВ на главную
+if (bonusesBackBtn && bonusesPage && mainPage) {
+  bonusesBackBtn.addEventListener('click', () => {
     showOnlyPage(mainPage);
   });
 }
@@ -6700,6 +6851,15 @@ if (bottomProfileBtn && profilePage && mainPage) {
 if (bottomWalletBtn && typeof openWalletModal === 'function') {
   bottomWalletBtn.addEventListener('click', () => {
     openWalletModal();
+  });
+}
+
+// нижнее меню: БОНУСЫ
+if (bottomBonusesBtn && bonusesPage) {
+  bottomBonusesBtn.addEventListener('click', () => {
+    showOnlyPage(bonusesPage);
+    sidebar.classList.remove('open');
+    sidebarBackdrop.classList.remove('open');
   });
 }
 
@@ -7555,7 +7715,15 @@ if (wheelBackBtn) {
   });
 }
 
- 
+ // Сайдбар: пункт "Бонусы"
+const bonusesNavBtn = document.querySelector('.menu-link[data-nav="bonuses"]');
+if (bonusesNavBtn && bonusesPage) {
+  bonusesNavBtn.addEventListener('click', () => {
+    showOnlyPage(bonusesPage);
+    sidebar.classList.remove('open');
+    sidebarBackdrop.classList.remove('open');
+  });
+}
 
   
 
