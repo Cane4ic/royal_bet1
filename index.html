@@ -5497,69 +5497,90 @@ html, body {
                 </div>
 
                 <div class="withdraw-option"
-                     data-code="BTC"
-                     data-main="BTC (Bitcoin)"
-                     data-min="0.0005"
-                     data-short="BTC"
-                     data-coin-img="coins/btc.png"
-                     data-net-img="networks/btc.png">
+                     data-code="TON"
+                     data-main="TON"
+                     data-min="15"
+                     data-short="TON"
+                     data-coin-img="coins/ton.png"
+                     data-net-img="networks/ton.png">
                   <div class="withdraw-select-icon-wrap">
                     <div class="withdraw-coin">
-                      <img src="coins/btc.png" alt="">
+                      <img src="coins/ton.png" alt="">
                     </div>
                     <div class="withdraw-network">
-                      <img src="networks/btc.png" alt="">
+                      <img src="networks/ton.png" alt="">
                     </div>
                   </div>
                   <div class="withdraw-option-text">
-                    <div class="withdraw-option-main">BTC (Bitcoin)</div>
-                    <div class="withdraw-option-sub">Сеть Bitcoin</div>
+                    <div class="withdraw-option-main">TON</div>
+                    <div class="withdraw-option-sub">Сеть TON</div>
                   </div>
                 </div>
 
                 <div class="withdraw-option"
-                     data-code="ETH"
-                     data-main="ETH (ERC20)"
-                     data-min="0.01"
-                     data-short="ETH"
-                     data-coin-img="coins/eth.png"
-                     data-net-img="networks/eth.png">
+                     data-code="BINANCEPAY"
+                     data-main="Binance Pay (USDT)"
+                     data-min="15"
+                     data-short="BINANCEPAY"
+                     data-coin-img="coins/binancepay.png"
+                     data-net-img="networks/binance.png">
                   <div class="withdraw-select-icon-wrap">
                     <div class="withdraw-coin">
-                      <img src="coins/eth.png" alt="">
+                      <img src="coins/binancepay.png" alt="">
                     </div>
                     <div class="withdraw-network">
-                      <img src="networks/eth.png" alt="">
+                      <img src="networks/binance.png" alt="">
                     </div>
                   </div>
                   <div class="withdraw-option-text">
-                    <div class="withdraw-option-main">ETH (ERC20)</div>
-                    <div class="withdraw-option-sub">Сеть Ethereum</div>
+                    <div class="withdraw-option-main">Binance Pay</div>
+                    <div class="withdraw-option-sub">USDT</div>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Адрес -->
+            <div class="withdraw-row" style="margin-top: 8px">
+              Укажите адрес для вывода
+            </div>
             <div class="withdraw-row">
-              <input class="withdraw-input"
-                     id="withdrawAddress"
-                     type="text"
-                     placeholder="Адрес кошелька">
+              <input
+                type="text"
+                id="withdrawAddress"
+                class="withdraw-input"
+                placeholder="Адрес кошелька">
+            </div>
+
+            <!-- Сумма -->
+            <div class="withdraw-row" style="margin-top: 8px">
+              Сумма для вывода
+            </div>
+            <div class="withdraw-row">
+              <input
+                type="number"
+                id="withdrawAmount"
+                class="withdraw-input"
+                min="0"
+                step="0.01"
+                placeholder="Введите сумму">
             </div>
 
             <!-- Минималка -->
-            <div class="withdraw-row">
-              <div class="withdraw-min" id="withdrawMinText">
-                Минимальная сумма 15 USDTTRC20
-              </div>
+            <div class="withdraw-row withdraw-min" style="margin-top: 6px">
+              <span id="withdrawMinText">Минимальная сумма 15 USDTTRC20</span>
             </div>
 
-            <button class="withdraw-confirm">Подтвердить</button>
+            <!-- Сообщение после отправки -->
+            <div class="withdraw-row withdraw-min" id="withdrawMessage" style="margin-top: 6px; display: none;">
+              Ваш вывод находится в обработке. Ожидайте.
+            </div>
+
+            <button class="withdraw-confirm" id="withdrawConfirmBtn">Подтвердить</button>
           </div>
         </div>
 
-        <!-- ИСТОРИЯ -->
+<!-- ИСТОРИЯ -->
         <div class="wallet-tab-panel" data-panel="history">
   <div class="wallet-deposit-subtitle">История операций</div>
 
@@ -6273,6 +6294,10 @@ const historyEmpty = document.getElementById('historyEmpty');
     const withdrawMinText = document.getElementById('withdrawMinText');
     const withdrawBalanceAmount = document.getElementById('withdrawBalanceAmount');
     const withdrawBalanceCode = document.getElementById('withdrawBalanceCode');
+    const withdrawAddressInput = document.getElementById('withdrawAddress');
+    const withdrawAmountInput = document.getElementById('withdrawAmount');
+    const withdrawConfirmBtn = document.getElementById('withdrawConfirmBtn');
+    const withdrawMessageBox = document.getElementById('withdrawMessage');
 
     // ===== ВАЛЮТЫ И КУРСЫ =====
 // playerBalance считаем в долларах / USDT
@@ -6360,8 +6385,8 @@ updateAllBalancesUI();
 
     const withdrawBalances = {
       USDTTRC20: 0,
-      BTC: 0,
-      ETH: 0
+      TON: 0,
+      BINANCEPAY: 0
     };
 
     function toggleSidebar() {
@@ -6587,6 +6612,102 @@ if (bottomMenuBtn) {
         withdrawDropdown.classList.remove('open');
       }
     });
+
+    // ===== ОБРАБОТКА КНОПКИ ВЫВОДА =====
+    function appendWithdrawHistory(amount, code) {
+      if (!historyList || !historyEmpty) return;
+
+      historyEmpty.style.display = 'none';
+
+      const row = document.createElement('div');
+      row.className = 'history-item';
+
+      const left = document.createElement('div');
+      left.className = 'h-left';
+
+      const type = document.createElement('div');
+      type.className = 'h-type';
+      type.textContent = `Вывод ${code}`;
+
+      const meta = document.createElement('div');
+      meta.className = 'h-meta';
+      const dateStr = new Date().toLocaleString();
+      meta.textContent = `${amount.toFixed(2)} ${code} • ${dateStr}`;
+
+      left.appendChild(type);
+      left.appendChild(meta);
+
+      const right = document.createElement('div');
+      right.style.textAlign = 'right';
+
+      const amtEl = document.createElement('div');
+      amtEl.className = 'h-amount';
+      amtEl.textContent = `-${amount.toFixed(2)} ${code}`;
+
+      const statusEl = document.createElement('div');
+      statusEl.className = 'h-status';
+      statusEl.textContent = 'В обработке';
+
+      right.appendChild(amtEl);
+      right.appendChild(statusEl);
+
+      row.appendChild(left);
+      row.appendChild(right);
+
+      historyList.prepend(row);
+    }
+
+    if (withdrawConfirmBtn && withdrawAmountInput) {
+      withdrawConfirmBtn.addEventListener('click', () => {
+        const address = (withdrawAddressInput && withdrawAddressInput.value.trim()) || '';
+        const rawValue = withdrawAmountInput.value.replace(',', '.');
+        const amount = Number(rawValue);
+        const code = (withdrawBalanceCode && withdrawBalanceCode.textContent.trim()) || 'USDTTRC20';
+
+        if (!address) {
+          alert('Укажите адрес для вывода.');
+          return;
+        }
+
+        if (!amount || isNaN(amount) || amount <= 0) {
+          alert('Укажите сумму для вывода.');
+          return;
+        }
+
+        // проверка достаточности баланса
+        const currentBalance = Number(withdrawBalanceAmount?.textContent || 0);
+        if (amount > currentBalance) {
+          alert('Недостаточно средств для вывода.');
+          return;
+        }
+
+        // проверка на минимальную сумму
+        let min = 0;
+        if (withdrawMinText && withdrawMinText.textContent) {
+          const match = withdrawMinText.textContent.match(/Минимальная сумма\s+(\d+(?:\.\d+)?)/);
+          if (match) {
+            min = Number(match[1]);
+          }
+        }
+
+        if (min && amount < min && code === 'USDTTRC20') {
+          alert(`Минимальная сумма для вывода ${min} ${code}.`);
+          return;
+        }
+
+        // показываем сообщение об обработке
+        if (withdrawMessageBox) {
+          withdrawMessageBox.style.display = 'flex';
+          withdrawMessageBox.textContent = 'Ваш вывод находится в обработке. Ожидайте.';
+        }
+
+        // добавляем в историю (локально)
+        appendWithdrawHistory(amount, code);
+
+        // очищаем поле суммы
+        withdrawAmountInput.value = '';
+      });
+    }
 
     /* ===== ОДИН АДАПТИВНЫЙ ПРОМО-БАННЕР ===== */
 
@@ -7738,6 +7859,16 @@ async function loadBalance() {
 
     playerBalance = balance;
     updateAllBalancesUI();
+
+    // обновляем баланс для вывода (по умолчанию USDTTRC20)
+    if (typeof withdrawBalances !== 'undefined') {
+      withdrawBalances.USDTTRC20 = balance;
+
+      if (withdrawBalanceAmount && withdrawBalanceCode &&
+          withdrawBalanceCode.textContent.trim() === 'USDTTRC20') {
+        withdrawBalanceAmount.textContent = balance.toFixed(2);
+      }
+    }
   } catch (err) {
     console.error("Ошибка запроса баланса:", err);
   }
@@ -8079,6 +8210,165 @@ document.addEventListener("DOMContentLoaded", () => {
 </div>
 
 
+
+  <script>
+    // ПЕРЕОПРЕДЕЛЁННАЯ ЗАГРУЗКА ИСТОРИИ ОПЕРАЦИЙ (депозиты + любые изменения баланса)
+    async function loadDepositHistory() {
+      const tgId = typeof getTgId === 'function' ? getTgId() : null;
+      if (!tgId || typeof historyList === 'undefined' || typeof historyEmpty === 'undefined' || !historyList || !historyEmpty) {
+        return;
+      }
+
+      historyList.innerHTML = '';
+      historyEmpty.style.display = 'none';
+
+      try {
+        const resp = await fetch("https://royal-api-8o0t.onrender.com/api/deposit-history", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tg_id: Number(tgId) })
+        });
+
+        if (!resp.ok) {
+          throw new Error("Bad status " + resp.status);
+        }
+
+        const data = await resp.json();
+        const items = Array.isArray(data) ? data : (data.items || data.deposits || []);
+
+        if (!items || !items.length) {
+          historyEmpty.textContent = 'История операций пуста.';
+          historyEmpty.style.display = 'block';
+          return;
+        }
+
+        items.forEach(renderHistoryRow);
+      } catch (err) {
+        console.error("Ошибка загрузки истории:", err);
+        historyEmpty.textContent = 'Не удалось загрузить историю операций.';
+        historyEmpty.style.display = 'block';
+      }
+    }
+
+    // Рендер одной записи истории (депозит, ручное пополнение, списание и т.д.)
+    function renderHistoryRow(item) {
+      if (!historyList) return;
+
+      const row = document.createElement('div');
+      row.className = 'history-item';
+
+      const left = document.createElement('div');
+      left.className = 'h-left';
+
+      const typeEl = document.createElement('div');
+      typeEl.className = 'h-type';
+
+      const meta = document.createElement('div');
+      meta.className = 'h-meta';
+
+      const cur = item.currency || item.symbol || item.code || 'USDT';
+      const amountNum = Number(item.amount || 0);
+      const sign = amountNum >= 0 ? '+' : '-';
+      const absAmount = Math.abs(amountNum);
+      const amountStr = `${absAmount.toFixed(2)} ${cur}`;
+
+      const rawType = (item.type || item.kind || item.operation_type || '').toString().toLowerCase();
+      const isAdminChange =
+        rawType.includes('admin') ||
+        rawType.includes('manual') ||
+        rawType.includes('adjust') ||
+        rawType.includes('bonus') ||
+        item.is_manual === true ||
+        item.from_admin === true;
+
+      let titleText = 'Операция';
+      if (amountNum > 0 && isAdminChange) {
+        titleText = 'Пополнение баланса';
+      } else if (amountNum > 0) {
+        titleText = 'Депозит';
+      } else if (amountNum < 0) {
+        titleText = 'Списание';
+      }
+      typeEl.textContent = titleText;
+
+      const metaParts = [];
+      if (absAmount > 0) {
+        metaParts.push(amountStr);
+      }
+
+      const network =
+        item.network_name ||
+        item.network ||
+        item.chain ||
+        '';
+      if (network) {
+        metaParts.push(network);
+      }
+
+      const tx =
+        item.txid ||
+        item.tx_hash ||
+        item.txHash ||
+        '';
+      if (tx) {
+        metaParts.push('TX: ' + tx);
+      }
+
+      const created =
+        item.created_at ||
+        item.createdAt ||
+        item.date ||
+        item.datetime ||
+        null;
+      if (created) {
+        try {
+          const dt = new Date(created);
+          if (!isNaN(dt.getTime())) {
+            metaParts.push(dt.toLocaleString());
+          }
+        } catch (_) {}
+      }
+
+      meta.textContent = metaParts.join(' • ');
+
+      left.appendChild(typeEl);
+      left.appendChild(meta);
+
+      const right = document.createElement('div');
+      right.style.textAlign = 'right';
+
+      const amountEl = document.createElement('div');
+      amountEl.className = 'h-amount';
+      amountEl.textContent = `${sign}${absAmount.toFixed(2)} ${cur}`;
+
+      const statusEl = document.createElement('div');
+      statusEl.className = 'h-status';
+
+      let statusText = 'Выполнено';
+      if (item.status) {
+        const st = String(item.status).toLowerCase();
+        if (st.includes('pend')) {
+          statusText = 'В обработке';
+        } else if (st.includes('fail') || st.includes('error') || st.includes('cancel')) {
+          statusText = 'Ошибка';
+        } else {
+          statusText = 'Выполнено';
+        }
+      } else {
+        statusText = 'Выполнено';
+      }
+
+      statusEl.textContent = statusText;
+
+      right.appendChild(amountEl);
+      right.appendChild(statusEl);
+
+      row.appendChild(left);
+      row.appendChild(right);
+
+      historyList.prepend(row);
+    }
+  </script>
 </body>
 </html>
 
