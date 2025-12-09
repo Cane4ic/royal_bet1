@@ -4849,7 +4849,7 @@ html, body {
           <span class="bonus-arrow">›</span>
         </div>
         <div class="bonus-amount">До 5 000 ₴</div>
-        <p class="bonuses-note">Пример карточки. Потом сюда можно подставить реальные данные из API.</p>
+        <p class="bonuses-note">Получи бонус до 100% за первый депозит!</p>
       </div>
 
       <div class="bonus-card">
@@ -4858,7 +4858,20 @@ html, body {
           <span class="bonus-arrow">›</span>
         </div>
         <div class="bonus-amount">10% каждую неделю</div>
-        <p class="bonuses-note">Условия акции можно вывести в отдельной модалке или на другой странице.</p>
+        <p class="bonuses-note"></p>
+      </div>
+
+      <div class="bonus-card">
+        <div class="bonus-row-top">
+          <span>Бонус за второй депозит</span>
+          <span class="bonus-arrow">›</span>
+        </div>
+        <div class="bonus-amount">До 500 FS</div>
+        <p class="bonuses-note">Условия Бонуса:
+          1. Сделай повторный депозит на сумму от 15$ </n>
+          2. Отыграй полученную сумму в любой игре! </n>
+          3. Выводи отыгранный бонус. </n>
+        </p>
       </div>
     </div>
   </section>
@@ -8213,161 +8226,151 @@ document.addEventListener("DOMContentLoaded", () => {
 
   <script>
     // ПЕРЕОПРЕДЕЛЁННАЯ ЗАГРУЗКА ИСТОРИИ ОПЕРАЦИЙ (депозиты + любые изменения баланса)
-    async function loadDepositHistory() {
-      const tgId = typeof getTgId === 'function' ? getTgId() : null;
-      if (!tgId || typeof historyList === 'undefined' || typeof historyEmpty === 'undefined' || !historyList || !historyEmpty) {
-        return;
-      }
+    // ОДНА версия функции, без дублей выше
+async function loadDepositHistory() {
+  const tgId = typeof getTgId === 'function' ? getTgId() : null;
+  if (!tgId || typeof historyList === 'undefined' || typeof historyEmpty === 'undefined' || !historyList || !historyEmpty) {
+    return;
+  }
 
-      historyList.innerHTML = '';
-      historyEmpty.style.display = 'none';
+  historyList.innerHTML = '';
+  historyEmpty.style.display = 'none';
 
-      try {
-        const resp = await fetch("https://royal-api-8o0t.onrender.com/api/deposit-history", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tg_id: Number(tgId) })
-        });
+  try {
+    const resp = await fetch("https://royal-api-8o0t.onrender.com/api/deposit-history", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tg_id: Number(tgId) })
+    });
 
-        if (!resp.ok) {
-          throw new Error("Bad status " + resp.status);
-        }
-
-        const data = await resp.json();
-        const items = Array.isArray(data) ? data : (data.items || data.deposits || []);
-
-        if (!items || !items.length) {
-          historyEmpty.textContent = 'История операций пуста.';
-          historyEmpty.style.display = 'block';
-          return;
-        }
-
-        items.forEach(renderHistoryRow);
-      } catch (err) {
-        console.error("Ошибка загрузки истории:", err);
-        historyEmpty.textContent = 'Не удалось загрузить историю операций.';
-        historyEmpty.style.display = 'block';
-      }
+    if (!resp.ok) {
+      throw new Error("Bad status " + resp.status);
     }
+
+    const data = await resp.json();
+    // твой API возвращает список, так что вот так:
+    const items = Array.isArray(data)
+      ? data
+      : (data.history || data.items || data.deposits || []);
+
+    if (!items || !items.length) {
+      historyEmpty.textContent = 'История операций пуста.';
+      historyEmpty.style.display = 'block';
+      return;
+    }
+
+    items.forEach(renderHistoryRow);
+  } catch (err) {
+    console.error("Ошибка загрузки истории:", err);
+    historyEmpty.textContent = 'Не удалось загрузить историю операций.';
+    historyEmpty.style.display = 'block';
+  }
+}
 
     // Рендер одной записи истории (депозит, ручное пополнение, списание и т.д.)
     function renderHistoryRow(item) {
-      if (!historyList) return;
+  if (!historyList) return;
 
-      const row = document.createElement('div');
-      row.className = 'history-item';
+  const row = document.createElement('div');
+  row.className = 'history-item';
 
-      const left = document.createElement('div');
-      left.className = 'h-left';
+  const left = document.createElement('div');
+  left.className = 'h-left';
 
-      const typeEl = document.createElement('div');
-      typeEl.className = 'h-type';
+  const typeEl = document.createElement('div');
+  typeEl.className = 'h-type';
 
-      const meta = document.createElement('div');
-      meta.className = 'h-meta';
+  const meta = document.createElement('div');
+  meta.className = 'h-meta';
 
-      const cur = item.currency || item.symbol || item.code || 'USDT';
-      const amountNum = Number(item.amount || 0);
-      const sign = amountNum >= 0 ? '+' : '-';
-      const absAmount = Math.abs(amountNum);
-      const amountStr = `${absAmount.toFixed(2)} ${cur}`;
+  const cur = item.currency || item.symbol || item.code || 'USDT';
+  const amountNum = Number(item.amount || 0);
+  const sign = amountNum >= 0 ? '+' : '-';
+  const absAmount = Math.abs(amountNum);
+  const amountStr = `${absAmount.toFixed(2)} ${cur}`;
 
-      const rawType = (item.type || item.kind || item.operation_type || '').toString().toLowerCase();
-      const isAdminChange =
-        rawType.includes('admin') ||
-        rawType.includes('manual') ||
-        rawType.includes('adjust') ||
-        rawType.includes('bonus') ||
-        item.is_manual === true ||
-        item.from_admin === true;
+  const rawType = (item.type || '').toLowerCase();
+  const isAdminChange =
+    rawType === 'admin_change' ||
+    item.is_manual === true ||
+    item.from_admin === true;
 
-      let titleText = 'Операция';
-      if (amountNum > 0 && isAdminChange) {
-        titleText = 'Пополнение баланса';
-      } else if (amountNum > 0) {
-        titleText = 'Депозит';
-      } else if (amountNum < 0) {
-        titleText = 'Списание';
+  let titleText = 'Операция';
+  if (amountNum > 0 && isAdminChange) {
+    titleText = 'Пополнение баланса';
+  } else if (amountNum > 0) {
+    titleText = 'Депозит';
+  } else if (amountNum < 0) {
+    titleText = 'Списание';
+  }
+  typeEl.textContent = titleText;
+
+  const metaParts = [];
+  if (absAmount > 0) metaParts.push(amountStr);
+
+  const network =
+    item.network_name || // <- поле, которое ты отдаёшь из API
+    item.network ||
+    item.chain ||
+    '';
+  if (network) metaParts.push(network);
+
+  const tx =
+    item.txid ||
+    item.tx_hash ||
+    item.txHash ||
+    '';
+  if (tx) metaParts.push('TX: ' + tx);
+
+  const created =
+    item.created_at ||
+    item.createdAt ||
+    item.date ||
+    item.datetime ||
+    null;
+  if (created) {
+    try {
+      const dt = new Date(created);
+      if (!isNaN(dt.getTime())) {
+        metaParts.push(dt.toLocaleString());
       }
-      typeEl.textContent = titleText;
+    } catch (e) {}
+  }
 
-      const metaParts = [];
-      if (absAmount > 0) {
-        metaParts.push(amountStr);
-      }
+  meta.textContent = metaParts.join(' • ');
 
-      const network =
-        item.network_name ||
-        item.network ||
-        item.chain ||
-        '';
-      if (network) {
-        metaParts.push(network);
-      }
+  left.appendChild(typeEl);
+  left.appendChild(meta);
 
-      const tx =
-        item.txid ||
-        item.tx_hash ||
-        item.txHash ||
-        '';
-      if (tx) {
-        metaParts.push('TX: ' + tx);
-      }
+  const right = document.createElement('div');
+  right.style.textAlign = 'right';
 
-      const created =
-        item.created_at ||
-        item.createdAt ||
-        item.date ||
-        item.datetime ||
-        null;
-      if (created) {
-        try {
-          const dt = new Date(created);
-          if (!isNaN(dt.getTime())) {
-            metaParts.push(dt.toLocaleString());
-          }
-        } catch (_) {}
-      }
+  const amountEl = document.createElement('div');
+  amountEl.className = 'h-amount';
+  amountEl.textContent = `${sign}${absAmount.toFixed(2)} ${cur}`;
 
-      meta.textContent = metaParts.join(' • ');
+  const statusEl = document.createElement('div');
+  statusEl.className = 'h-status';
 
-      left.appendChild(typeEl);
-      left.appendChild(meta);
+  let statusText = 'Выполнено';
+  if (item.status) {
+    const st = String(item.status).toLowerCase();
+    if (st.includes('pend')) statusText = 'В обработке';
+    else if (st.includes('fail') || st.includes('error') || st.includes('cancel')) statusText = 'Ошибка';
+    else statusText = 'Выполнено';
+  }
 
-      const right = document.createElement('div');
-      right.style.textAlign = 'right';
+  statusEl.textContent = statusText;
 
-      const amountEl = document.createElement('div');
-      amountEl.className = 'h-amount';
-      amountEl.textContent = `${sign}${absAmount.toFixed(2)} ${cur}`;
+  right.appendChild(amountEl);
+  right.appendChild(statusEl);
 
-      const statusEl = document.createElement('div');
-      statusEl.className = 'h-status';
+  row.appendChild(left);
+  row.appendChild(right);
 
-      let statusText = 'Выполнено';
-      if (item.status) {
-        const st = String(item.status).toLowerCase();
-        if (st.includes('pend')) {
-          statusText = 'В обработке';
-        } else if (st.includes('fail') || st.includes('error') || st.includes('cancel')) {
-          statusText = 'Ошибка';
-        } else {
-          statusText = 'Выполнено';
-        }
-      } else {
-        statusText = 'Выполнено';
-      }
+  historyList.prepend(row);
+}
 
-      statusEl.textContent = statusText;
-
-      right.appendChild(amountEl);
-      right.appendChild(statusEl);
-
-      row.appendChild(left);
-      row.appendChild(right);
-
-      historyList.prepend(row);
-    }
   </script>
 </body>
 </html>
